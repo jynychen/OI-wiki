@@ -33,13 +33,13 @@ $$
 设 $f(t)$ 是关于时间 $t$ 的函数，则傅里叶变换可以检测频率 $\omega$ 的周期在 $f(t)$ 出现的程度：
 
 $$
-F(\omega)=\mathbb{F}[f(t)]=\int_{-\infty}^{\infty}f(t)e^{-i{\omega}t}dt
+F(\omega)=\mathbb{F}[f(t)]=\int_{-\infty}^{\infty}f(t)\mathrm{e}^{-\mathrm{i}{\omega}t}dt
 $$
 
 它的逆变换是
 
 $$
-f(t)=\mathbb{F}^{-1}[F(\omega)]=\frac{1}{2\pi}\int_{-\infty}^{\infty}F(\omega)e^{i{\omega}t}d\omega
+f(t)=\mathbb{F}^{-1}[F(\omega)]=\frac{1}{2\pi}\int_{-\infty}^{\infty}F(\omega)\mathrm{e}^{\mathrm{i}{\omega}t}d\omega
 $$
 
 逆变换的形式与正变换非常类似，分母 $2\pi$ 恰好是指数函数的周期。
@@ -50,17 +50,17 @@ $$
 
 ## 离散傅里叶变换
 
-**离散傅里叶变换**（Discrete Fourier transform，DFT）是傅里叶变换在时域和频域上都呈离散的形式，将信号的时域采样变换为其 DTFT 的频域采样。
+**离散傅里叶变换**（Discrete Fourier transform，DFT）是傅里叶变换在时域和频域上都呈离散的形式，将信号的时域采样变换为其 DTFT（discrete-time Fourier transform）的频域采样。
 
 傅里叶变换是积分形式的连续的函数内积，离散傅里叶变换是求和形式的内积。
 
 设 $\{x_n\}_{n=0}^{N-1}$ 是某一满足有限性条件的序列，它的离散傅里叶变换（DFT）为：
 
 $$
-X_k=\sum_{n=0}^{N-1}x_ne^{-i\frac{2\pi}{N}kn}
+X_k=\sum_{n=0}^{N-1}x_n\mathrm{e}^{-\mathrm{i}\frac{2\pi}{N}kn}
 $$
 
-其中 $e$ 是自然对数的底数，$i$ 是虚数单位。通常以符号 $\mathcal {F}$ 表示这一变换，即
+其中 $\mathrm{e}$ 是自然对数的底数，$i$ 是虚数单位。通常以符号 $\mathcal {F}$ 表示这一变换，即
 
 $$
 \hat{x}=\mathcal{F}x
@@ -69,7 +69,7 @@ $$
 类似于积分形式，它的 **逆离散傅里叶变换**（IDFT）为：
 
 $$
-x_n=\frac{1}{N}\sum_{k=0}^{N-1}X_ke^{i\frac{2\pi}{N}kn}
+x_n=\frac{1}{N}\sum_{k=0}^{N-1}X_k\mathrm{e}^{\mathrm{i}\frac{2\pi}{N}kn}
 $$
 
 可以记为：
@@ -82,41 +82,41 @@ $$
 
 离散傅里叶变换仍旧是时域到频域的变换。由于求和形式的特殊性，可以有其他的解释方法。
 
-如果把序列 $x_n$ 看作多项式 $f(x)$ 的 $x^n$ 项系数，则计算得到的 $X_k$ 恰好是多项式 $f(x)$ 代入单位根 $e^{\frac{-2\pi ik}{N}}$ 的点值 $f(e^{\frac{-2\pi ik}{N}})$。
+如果把序列 $x_n$ 看作多项式 $f(x)$ 的 $x^n$ 项系数，则计算得到的 $X_k$ 恰好是多项式 $f(x)$ 代入单位根 $\mathrm{e}^{\frac{-2\pi \mathrm{i}k}{N}}$ 的点值 $f(\mathrm{e}^{\frac{-2\pi \mathrm{i}k}{N}})$。
 
-这便构成了卷积定理的另一种解释办法，即对多项式进行特殊的插值操作。离散傅里叶变换恰好是多项式在单位根处进行插值。
+这便构成了卷积定理的另一种解释办法，即对多项式进行特殊的求值操作。离散傅里叶变换恰好是多项式在单位根处进行求值。
 
 例如计算：
 
 $$
-C_n^{3}+C_n^{7}+C_n^{11}+C_n^{15}+\ldots
+\dbinom{n}{3}+\dbinom{n}{7}+\dbinom{n}{11}+\dbinom{n}{15}+\ldots
 $$
 
 定义函数 $f(x)$ 为：
 
 $$
-f(x)={(1+x)}^n=C_n^{0}x^0+C_n^{1}x^1+C_n^{2}x^2+C_n^{3}x^3+\ldots
+f(x)={(1+x)}^n=\dbinom{n}{0}x^0+\dbinom{n}{1}x^1+\dbinom{n}{2}x^2+\dbinom{n}{3}x^3+\ldots
 $$
 
-然后可以发现，代入四次单位根 $f(i)$ 得到这样的序列：
+然后可以发现，代入四次单位根 $f(\mathrm{i})$ 得到这样的序列：
 
 $$
-f(i)={(1+i)}^n=C_n^{0}+C_n^{1}i-C_n^{2}-C_n^{3}i+\ldots
+f(\mathrm{i})={(1+\mathrm{i})}^n=\dbinom{n}{0}+\dbinom{n}{1}\mathrm{i}-\dbinom{n}{2}-\dbinom{n}{3}\mathrm{i}+\ldots
 $$
 
 于是下面的求和恰好可以把其余各项消掉：
 
 $$
-f(1)+if(i)-f(-1)-if(-i)=4C_n^{3}+4C_n^{7}+4C_n^{11}+4C_n^{15}+\ldots
+f(1)+\mathrm{i}f(\mathrm{i})-f(-1)-\mathrm{i}f(-\mathrm{i})=4\dbinom{n}{3}+4\dbinom{n}{7}+4\dbinom{n}{11}+4\dbinom{n}{15}+\ldots
 $$
 
 因此这道数学题的答案为：
 
 $$
-C_n^{3}+C_n^{7}+C_n^{11}+C_n^{15}+\ldots=\frac{2^n+i(1+i)^n-i(1-i)^n}{4}
+\dbinom{n}{3}+\dbinom{n}{7}+\dbinom{n}{11}+\dbinom{n}{15}+\ldots=\frac{2^n+\mathrm{i}(1+\mathrm{i})^n-\mathrm{i}(1-\mathrm{i})^n}{4}
 $$
 
-这道数学题在单位根处插值，恰好构成离散傅里叶变换。
+这道数学题在单位根处求值，恰好构成离散傅里叶变换。
 
 ### 矩阵公式
 
@@ -128,26 +128,26 @@ $$
     X_{1}  \\
     X_{2}  \\
     \vdots \\
-    X_{n-1}
+    X_{N-1}
 \end{bmatrix}
 =
 \begin{bmatrix}
     1      & 1            & 1               & \cdots & 1                   \\
-    1      & \alpha       & \alpha^{2}      & \cdots & \alpha^{n-1}        \\
-    1      & \alpha^{2}   & \alpha^{4}      & \cdots & \alpha^{2(n-1)}     \\
+    1      & \alpha       & \alpha^{2}      & \cdots & \alpha^{N-1}        \\
+    1      & \alpha^{2}   & \alpha^{4}      & \cdots & \alpha^{2(N-1)}     \\
     \vdots & \vdots       & \vdots          & \ddots & \vdots              \\
-    1      & \alpha^{n-1} & \alpha^{2(n-1)} & \cdots & \alpha^{(n-1)(n-1)}
+    1      & \alpha^{N-1} & \alpha^{2(N-1)} & \cdots & \alpha^{(N-1)(N-1)}
 \end{bmatrix}
 \begin{bmatrix}
     x_{0}  \\
     x_{1}  \\
     x_{2}  \\
     \vdots \\
-    x_{n-1}
+    x_{N-1}
 \end{bmatrix}
 $$
 
-其中 $\alpha = e^{-i\frac{2\pi}{N}n}$。
+其中 $\alpha = \mathrm{e}^{-\mathrm{i}\frac{2\pi}{N}}$。
 
 ## 快速傅里叶变换
 
@@ -226,10 +226,10 @@ $$
     #include <cmath>
     #include <complex>
     
-    typedef std::complex<double> Comp;  // STL complex
+    using Comp = std::complex<double>;  // STL complex
     
-    const Comp I(0, 1);  // i
-    const int MAX_N = 1 << 20;
+    constexpr Comp I(0, 1);  // i
+    constexpr int MAX_N = 1 << 20;
     
     Comp tmp[MAX_N];
     
@@ -276,16 +276,16 @@ $$
 
 以 $8$ 项多项式为例，模拟拆分的过程：
 
-- 初始序列为 $\{x_0, x_1, x_2, x_3, x_4, x_5, x_6, x_7\}$
-- 一次二分之后 $\{x_0, x_2, x_4, x_6\},\{x_1, x_3, x_5, x_7 \}$
-- 两次二分之后 $\{x_0,x_4\} \{x_2, x_6\},\{x_1, x_5\},\{x_3, x_7 \}$
-- 三次二分之后 $\{x_0\}\{x_4\}\{x_2\}\{x_6\}\{x_1\}\{x_5\}\{x_3\}\{x_7 \}$
+-   初始序列为 $\{x_0, x_1, x_2, x_3, x_4, x_5, x_6, x_7\}$
+-   一次二分之后 $\{x_0, x_2, x_4, x_6\},\{x_1, x_3, x_5, x_7 \}$
+-   两次二分之后 $\{x_0,x_4\} \{x_2, x_6\},\{x_1, x_5\},\{x_3, x_7 \}$
+-   三次二分之后 $\{x_0\}\{x_4\}\{x_2\}\{x_6\}\{x_1\}\{x_5\}\{x_3\}\{x_7 \}$
 
 规律：其实就是原来的那个序列，每个数用二进制表示，然后把二进制翻转对称一下，就是最终那个位置的下标。比如 $x_1$ 是 001，翻转是 100，也就是 4，而且最后那个位置确实是 4。我们称这个变换为位逆序置换（bit-reversal permutation），证明留给读者自证。
 
 根据它的定义，我们可以在 $O(n\log n)$ 的时间内求出每个数变换后的结果：
 
-???+ note "位逆序置换实现（$O(n\log n)$）"
+???+ note " 位逆序置换实现（$O(n\log n)$）"
     ```cpp
     /*
      * 进行 FFT 和 IFFT 前的反置变换
@@ -299,7 +299,7 @@ $$
         // 交换互为小标反转的元素，i < j 保证交换一次
         if (i < j) swap(y[i], y[j]);
         // i 做正常的 + 1，j 做反转类型的 + 1，始终保持 i 和 j 是反转的。
-        // 这里 k 代表了 0 出现的最高位。j 先减去高位的全为 1 的数字，知道遇到了
+        // 这里 k 代表了 0 出现的最高位。j 先减去高位的全为 1 的数字，直到遇到了
         // 0，之后再加上即可。
         k = len / 2;
         while (j >= k) {
@@ -325,10 +325,10 @@ $$
 
 举个例子：设 $k=5$，$len=(100000)_2$。为了翻转 $(11001)_2$：
 
-1. 考虑 $(1100)_2$，我们知道 $R((1100)_2)=R((01100)_2)=(00110)_2$，再右移一位就得到了 $(00011)_2$。
-2. 考虑个位，如果是 $1$，它就要翻转到数的最高位，即翻转数加上 $(10000)_2=2^{k-1}$，如果是 $0$ 则不用更改。
+1.  考虑 $(1100)_2$，我们知道 $R((1100)_2)=R((01100)_2)=(00110)_2$，再右移一位就得到了 $(00011)_2$。
+2.  考虑个位，如果是 $1$，它就要翻转到数的最高位，即翻转数加上 $(10000)_2=2^{k-1}$，如果是 $0$ 则不用更改。
 
-???+ note "位逆序置换实现（$O(n)$）"
+???+ note " 位逆序置换实现（$O(n)$）"
     ```cpp
     // 同样需要保证 len 是 2 的幂
     // 记 rev[i] 为 i 翻转后的值
@@ -361,17 +361,17 @@ $$
 
 使用位逆序置换后，对于给定的 $n, k$：
 
-- $G(\omega_{n/2}^k)$ 的值存储在数组下标为 $k$ 的位置，$H(\omega_{n/2}^k)$ 的值存储在数组下标为 $k + \dfrac{n}{2}$ 的位置。
-- $f(\omega_n^k)$ 的值将存储在数组下标为 $k$ 的位置，$f(\omega_n^{k+n/2})$ 的值将存储在数组下标为 $k + \dfrac{n}{2}$ 的位置。
+-   $G(\omega_{n/2}^k)$ 的值存储在数组下标为 $k$ 的位置，$H(\omega_{n/2}^k)$ 的值存储在数组下标为 $k + \dfrac{n}{2}$ 的位置。
+-   $f(\omega_n^k)$ 的值将存储在数组下标为 $k$ 的位置，$f(\omega_n^{k+n/2})$ 的值将存储在数组下标为 $k + \dfrac{n}{2}$ 的位置。
 
 因此可以直接在数组下标为 $k$ 和 $k + \frac{n}{2}$ 的位置进行覆写，而不用开额外的数组保存值。此方法即称为 **蝶形运算**，或更准确的，基 - 2 蝶形运算。
 
 再详细说明一下如何借助蝶形运算完成所有段长度为 $\frac{n}{2}$ 的合并操作：
 
-1. 令段长度为 $s = \frac{n}{2}$；
-2. 同时枚举序列 $\{G(\omega_{n/2}^k)\}$ 的左端点 $l_g = 0, 2s, 4s, \cdots, N-2s$ 和序列 $\{H(\omega_{n/2}^k)\}$ 的左端点 $l_h = s, 3s, 5s, \cdots, N-s$；
-3. 合并两个段时，枚举 $k = 0, 1, 2, \cdots, s-1$，此时 $G(\omega_{n/2}^k)$ 存储在数组下标为 $l_g + k$ 的位置，$H(\omega_{n/2}^k)$ 存储在数组下标为 $l_h + k$ 的位置；
-4. 使用蝶形运算求出 $f(\omega_n^k)$ 和 $f(\omega_n^{k+n/2})$，然后直接在原位置覆写。
+1.  令段长度为 $s = \frac{n}{2}$；
+2.  同时枚举序列 $\{G(\omega_{n/2}^k)\}$ 的左端点 $l_g = 0, 2s, 4s, \cdots, N-2s$ 和序列 $\{H(\omega_{n/2}^k)\}$ 的左端点 $l_h = s, 3s, 5s, \cdots, N-s$；
+3.  合并两个段时，枚举 $k = 0, 1, 2, \cdots, s-1$，此时 $G(\omega_{n/2}^k)$ 存储在数组下标为 $l_g + k$ 的位置，$H(\omega_{n/2}^k)$ 存储在数组下标为 $l_h + k$ 的位置；
+4.  使用蝶形运算求出 $f(\omega_n^k)$ 和 $f(\omega_n^{k+n/2})$，然后直接在原位置覆写。
 
 ## 快速傅里叶逆变换
 
@@ -402,10 +402,10 @@ $$
 为了使计算的结果为原来的倒数，根据欧拉公式，可以得到
 
 $$
-\frac{1}{\omega_k}=\omega_k^{-1}=e^{-\frac{2\pi i}{k}}=\cos\left(\frac{2\pi}{k}\right)+i\cdot \sin\left(-\frac{2\pi}{k}\right)
+\frac{1}{\omega_k}=\omega_k^{-1}=\mathrm{e}^{-\frac{2\pi \mathrm{i}}{k}}=\cos\left(\frac{2\pi}{k}\right)+\mathrm{i} \sin\left(-\frac{2\pi}{k}\right)
 $$
 
-因此我们可以尝试着把单位根 $\omega_k$ 取成 $e^{-\frac{2\pi i}{k}}$，这样我们的计算结果就会变成原来的倒数，之后唯一多的操作就只有再 **除以它的长度 $n$**，而其它的操作过程与 DFT 是完全相同的。我们可以定义一个函数，在里面加一个参数 $1$ 或者是 $-1$，然后把它乘到 $\pi$ 上。传入 $1$ 就是 DFT，传入 $-1$ 就是 IDFT。
+因此我们可以尝试着把单位根 $\omega_k$ 取成 $\mathrm{e}^{-\frac{2\pi \mathrm{i}}{k}}$，这样我们的计算结果就会变成原来的倒数，之后唯一多的操作就只有再 **除以它的长度 $n$**，而其它的操作过程与 DFT 是完全相同的。我们可以定义一个函数，在里面加一个参数 $1$ 或者是 $-1$，然后把它乘到 $\pi$ 上。传入 $1$ 就是 DFT，传入 $-1$ 就是 IDFT。
 
 ### 单位复根周期性
 
@@ -454,10 +454,10 @@ $$
 
 $$
 S\left(\omega_n^a\right)=
-\left\{\begin{aligned}
-n,a=0\\
-0,a\neq 0
-\end{aligned}\right.
+\begin{cases}
+n,&a=0\\
+0,&a\neq 0
+\end{cases}
 $$
 
 那么代回原式
@@ -517,8 +517,8 @@ $$
             // 这就是把两部分分治的结果加起来
             y[k] = u + t;
             y[k + h / 2] = u - t;
-            // 后半个 “step” 中的ω一定和 “前半个” 中的成相反数
-            // “红圈”上的点转一整圈“转回来”，转半圈正好转成相反数
+            // 后半个 「step」 中的ω一定和 「前半个」 中的成相反数
+            // 「红圈」上的点转一整圈「转回来」，转半圈正好转成相反数
             // 一个数相反数的平方与这个数自身的平方相等
             w = w * wn;
           }
@@ -551,8 +551,8 @@ $$
             Complex t = w * y[k + h / 2];
             y[k] = u + t;  // 这就是把两部分分治的结果加起来
             y[k + h / 2] = u - t;
-            // 后半个 “step” 中的ω一定和 “前半个” 中的成相反数
-            // “红圈”上的点转一整圈“转回来”，转半圈正好转成相反数
+            // 后半个 「step」 中的ω一定和 「前半个」 中的成相反数
+            // 「红圈」上的点转一整圈「转回来」，转半圈正好转成相反数
             // 一个数相反数的平方与这个数自身的平方相等
             w = w * wn;
           }
@@ -567,11 +567,11 @@ $$
     }
     ```
 
-??? "FFT 模板（ [HDU 1402 -	A * B Problem Plus](http://acm.hdu.edu.cn/showproblem.php?pid=1402) ）"
+??? "FFT 模板（[HDU 1402 -	A * B Problem Plus](http://acm.hdu.edu.cn/showproblem.php?pid=1402)）"
     ```cpp
     --8<-- "docs/math/code/poly/fft/fft_3.cpp"
     ```
 
 ## 参考文献
 
-1. [桃酱的算法笔记](https://zhuanlan.zhihu.com/p/41867199).
+1.  [桃酱的算法笔记](https://zhuanlan.zhihu.com/p/41867199).

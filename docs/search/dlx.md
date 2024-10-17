@@ -8,9 +8,9 @@ author: LeverImmy, 383494
 
 精确覆盖问题（英文：Exact Cover Problem）是指给定许多集合 $S_i (1 \le i \le n)$ 以及一个集合 $X$，求满足以下条件的无序多元组 $(T_1, T_2, \cdots , T_m)$：
 
-1. $\forall i, j \in [1, m],T_i\bigcap T_j = \varnothing (i \neq j)$
-2. $X = \bigcup\limits_{i = 1}^{m}T_i$
-3. $\forall i \in[1, m], T_i \in \{S_1, S_2, \cdots, S_n\}$
+1.  $\forall i, j \in [1, m],T_i\bigcap T_j = \varnothing (i \neq j)$
+2.  $X = \bigcup\limits_{i = 1}^{m}T_i$
+3.  $\forall i \in[1, m], T_i \in \{S_1, S_2, \cdots, S_n\}$
 
 ### 解释
 
@@ -287,10 +287,10 @@ $$
 
 通过上述步骤，可将 X 算法的流程概括如下：
 
-1. 对于现在的矩阵 $M$，选择并标记一行 $r$，将 $r$ 添加至 $S$ 中；
-2. 如果尝试了所有的 $r$ 却无解，则算法结束，输出无解；
-3. 标记与 $r$ 相关的行 $r_i$ 和 $c_i$（相关的行和列与 [X 算法](#过程) 中第 2 步定义相同，下同）；
-4. 删除所有标记的行和列，得到新矩阵 $M'$；
+1.  对于现在的矩阵 $M$，选择并标记一行 $r$，将 $r$ 添加至 $S$ 中；
+2.  如果尝试了所有的 $r$ 却无解，则算法结束，输出无解；
+3.  标记与 $r$ 相关的行 $r_i$ 和 $c_i$（相关的行和列与 [X 算法](#过程) 中第 2 步定义相同，下同）；
+4.  删除所有标记的行和列，得到新矩阵 $M'$；
 5.  如果 $M'$ 为空，且 $r$ 为全 $1$，则算法结束，输出被删除的行组成的集合 $S$；
 
     如果 $M'$ 为空，且 $r$ 不全为 $1$，则恢复与 $r$ 相关的行 $r_i$ 以及列 $c_i$，跳转至步骤 1；
@@ -317,15 +317,15 @@ Donald E. Knuth 想到了用双向十字链表来维护这些操作。
 
 双向十字链表中存在四个指针域，分别指向上、下、左、右的元素；且每个元素 $i$ 在整个双向十字链表系中都对应着一个格子，因此还要表示 $i$ 所在的列和所在的行，如图所示：
 
-![dlx-1](./images/dlx-1.png)
+![dlx-1.svg](./images/dlx-1.svg)
 
 大型的双向链表则更为复杂：
 
-![dlx-2](./images/dlx-2.png)
+![dlx-2.svg](./images/dlx-2.svg)
 
 每一行都有一个行首指示，每一列都有一个列指示。
 
-行首指示为 `first[]`，列指示是我们虚拟出的 $c + 1$ 个结点。
+行首指示为 `first[]`，列指示是我们新建的 $c + 1$ 个哨兵结点。值得注意的是，**行首指示并非是链表中的哨兵结点**。它是虚拟的，类似于邻接表中的 `first[]` 数组，**直接指向** 这一行中的首元素。
 
 同时，每一列都有一个 `siz[]` 表示这一列的元素个数。
 
@@ -346,29 +346,29 @@ int col[MS], row[MS];
 
 先将 $c$ 删除，此时：
 
-- $c$ 左侧的结点的右结点应为 $c$ 的右结点。
-- $c$ 右侧的结点的左结点应为 $c$ 的左结点。
+-   $c$ 左侧的结点的右结点应为 $c$ 的右结点。
+-   $c$ 右侧的结点的左结点应为 $c$ 的左结点。
 
 即 `L[R[c]] = L[c], R[L[c]] = R[c];`。
 
-![dlx-3.png](./images/dlx-3.png)
+![dlx-3.svg](./images/dlx-3.svg)
 
 然后顺着这一列往下走，把走过的每一行都删掉。
 
 如何删掉每一行呢？枚举当前行的指针 $j$，此时：
 
-- $j$ 上方的结点的下结点应为 $j$ 的下结点。
-- $j$ 下方的结点的上结点应为 $j$ 的上结点。
+-   $j$ 上方的结点的下结点应为 $j$ 的下结点。
+-   $j$ 下方的结点的上结点应为 $j$ 的上结点。
 
 注意要修改每一列的元素个数。
 
 即 `U[D[j]] = U[j], D[U[j]] = D[j], --siz[col[j]];`。
 
-![dlx-4.png](./images/dlx-4.png)
+![dlx-4.svg](./images/dlx-4.svg)
 
 `remove` 函数的代码实现如下：
 
-???+note "实现"
+???+ note "实现"
     ```cpp
     void remove(const int &c) {
       int i, j;
@@ -391,7 +391,7 @@ int col[MS], row[MS];
 
 `recover(c)` 的代码实现如下：
 
-???+note "实现"
+???+ note "实现"
     ```cpp
     void recover(const int &c) {
       int i, j;
@@ -408,15 +408,15 @@ int col[MS], row[MS];
 
 第 $i$ 个点的左结点为 $i - 1$，右结点为 $i + 1$，上结点为 $i$，下结点为 $i$。特殊地，$0$ 结点的左结点为 $c$，$c$ 结点的右结点为 $0$。
 
-于是我们得到了一条链：
+于是我们得到了一个环状双向链表：
 
-![dlx-5.png](./images/dlx-5.png)
+![dlx-5.svg](./images/dlx-5.svg)
 
-这样就初始化了一个 Dancing Link。
+这样就初始化了一个 Dancing Links。
 
 `build(r, c)` 的代码实现如下：
 
-???+note "实现"
+???+ note "实现"
     ```cpp
     void build(const int &r, const int &c) {
       n = r, m = c;
@@ -446,10 +446,10 @@ int col[MS], row[MS];
 
     -   把 $idx$ 插入到 $c$ 的正下方，此时：
 
-        - $idx$ 下方的结点为原来 $c$ 的下结点；
-        - $idx$ 下方的结点（即原来 $c$ 的下结点）的上结点为 $idx$;
-        - $idx$ 的上结点为 $c$；
-        - $c$ 的下结点为 $idx$。
+        -   $idx$ 下方的结点为原来 $c$ 的下结点；
+        -   $idx$ 下方的结点（即原来 $c$ 的下结点）的上结点为 $idx$;
+        -   $idx$ 的上结点为 $c$；
+        -   $c$ 的下结点为 $idx$。
 
         注意记录 $idx$ 的所在列和所在行，以及更新这一列的元素个数。
 
@@ -462,10 +462,10 @@ int col[MS], row[MS];
 
     -   把 $idx$ 插入到 $first(r)$ 的正右方，此时：
 
-        - $idx$ 右侧的结点为原来 $first(r)$ 的右结点；
-        - 原来 $first(r)$ 右侧的结点的左结点为 $idx$；
-        - $idx$ 的左结点为 $first(r)$；
-        - $first(r)$ 的右结点为 $idx$。
+        -   $idx$ 右侧的结点为原来 $first(r)$ 的右结点；
+        -   原来 $first(r)$ 右侧的结点的左结点为 $idx$；
+        -   $idx$ 的左结点为 $first(r)$；
+        -   $first(r)$ 的右结点为 $idx$。
 
         ```cpp
         L[idx] = first[r], R[idx] = R[first[r]];
@@ -476,13 +476,13 @@ int col[MS], row[MS];
 
 `insert(r, c)` 这个操作可以通过图片来辅助理解：
 
-![dlx-6.png](./images/dlx-6.png)
+![dlx-6.svg](./images/dlx-6.svg)
 
 留心曲线箭头的方向。
 
 `insert(r, c)` 的代码实现如下：
 
-???+note "实现"
+???+ note "实现"
     ```cpp
     void insert(const int &r, const int &c) {
       row[++idx] = r, col[idx] = c, ++siz[c];
@@ -500,32 +500,32 @@ int col[MS], row[MS];
 
 `dance()` 即为递归地删除以及还原各个行列的过程。
 
-1. 如果 $0$ 号结点没有右结点，那么矩阵为空，记录答案并返回；
-2. 选择列元素个数最少的一列，并删掉这一列；
-3. 遍历这一列所有有 $1$ 的行，枚举它是否被选择；
-4. 递归调用 `dance()`，如果可行，则返回；如果不可行，则恢复被选择的行；
-5. 如果无解，则返回。
+1.  如果 $0$ 号结点没有右结点，那么矩阵为空，记录答案并返回；
+2.  选择列元素个数最少的一列，并删掉这一列；
+3.  遍历这一列所有有 $1$ 的行，枚举它是否被选择；
+4.  递归调用 `dance()`，如果可行，则返回；如果不可行，则恢复被选择的行；
+5.  如果无解，则返回。
 
 `dance()` 的代码实现如下：
 
-???+note "实现"
+???+ note "实现"
     ```cpp
     bool dance(int dep) {
       int i, j, c = R[0];
       if (!R[0]) {
         ans = dep;
-        return 1;
+        return true;
       }
       IT(i, R, 0) if (siz[i] < siz[c]) c = i;
       remove(c);
       IT(i, D, c) {
         stk[dep] = row[i];
         IT(j, R, i) remove(col[j]);
-        if (dance(dep + 1)) return 1;
+        if (dance(dep + 1)) return true;
         IT(j, L, i) recover(col[j]);
       }
       recover(c);
-      return 0;
+      return false;
     }
     ```
 
@@ -556,9 +556,9 @@ DLX 的难点，不全在于链表的建立，而在于建模。
 
 我们每拿到一个题，应该考虑行和列所表示的意义：
 
-- 行表示*决策*，因为每行对应着一个集合，也就对应着选/不选；
+-   行表示*决策*，因为每行对应着一个集合，也就对应着选/不选；
 
-- 列表示*状态*，因为第 $i$ 列对应着某个条件 $P_i$。
+-   列表示*状态*，因为第 $i$ 列对应着某个条件 $P_i$。
 
 对于某一行而言，由于不同的列的值不尽相同，我们 **由不同的状态，定义了一个决策**。
 
@@ -569,7 +569,7 @@ DLX 的难点，不全在于链表的建立，而在于建模。
     
     在这一题中，每一个决策可以用形如 $(r, c, w)$ 的有序三元组表示。
     
-    注意到“宫”并不是决策的参数，因为它 **可以被每个确定的 $(r, c)$ 表示**。
+    注意到「宫」并不是决策的参数，因为它 **可以被每个确定的 $(r, c)$ 表示**。
     
     因此有 $9 \times 9 \times 9 = 729$ 行。
     
@@ -577,10 +577,10 @@ DLX 的难点，不全在于链表的建立，而在于建模。
     
     我们思考一下 $(r, c, w)$ 这个决将会造成什么影响。记 $(r, c)$ 所在的宫为 $b$。
     
-    1. 第 $r$ 行用了一个 $w$（用 $9 \times 9 = 81$ 列表示）；
-    2. 第 $c$ 列用了一个 $w$（用 $9 \times 9 = 81$ 列表示）；
-    3. 第 $b$ 宫用了一个 $w$（用 $9 \times 9 = 81$ 列表示）；
-    4. $(r, c)$ 中填入了一个数（用 $9 \times 9 = 81$ 列表示）。
+    1.  第 $r$ 行用了一个 $w$（用 $9 \times 9 = 81$ 列表示）；
+    2.  第 $c$ 列用了一个 $w$（用 $9 \times 9 = 81$ 列表示）；
+    3.  第 $b$ 宫用了一个 $w$（用 $9 \times 9 = 81$ 列表示）；
+    4.  $(r, c)$ 中填入了一个数（用 $9 \times 9 = 81$ 列表示）。
     
     因此有 $81 \times 4 = 324$ 列，共 $729 \times 4 = 2916$ 个 $1$。
     
@@ -632,9 +632,8 @@ DLX 的难点，不全在于链表的建立，而在于建模。
     
     我们思考一下，$(v, d, f, i)$ 这个决策会造成什么影响。
     
-    1. 某些格子被占了（用 $55$ 列表示）；
-    
-    2. 第 $i$ 个智慧珠被用了（用 $12$ 列表示）。
+    1.  某些格子被占了（用 $55$ 列表示）；
+    2.  第 $i$ 个智慧珠被用了（用 $12$ 列表示）。
     
     因此有 $55 + 12 = 67$ 列，共 $5280 \times (5 + 1) = 31680$ 个 $1$。
     
@@ -647,16 +646,16 @@ DLX 的难点，不全在于链表的建立，而在于建模。
 
 ## 习题
 
-- [SUDOKU - Sudoku](https://www.spoj.com/problems/SUDOKU/)
-- [「kuangbin 带你飞」专题三 Dancing Links](https://vjudge.net/contest/65998#overview)
+-   [SUDOKU - Sudoku](https://www.spoj.com/problems/SUDOKU/)
+-   [「kuangbin 带你飞」专题三 Dancing Links](https://vjudge.net/contest/65998#overview)
 
 ## 外部链接
 
-- [夜深人静写算法（九）- Dancing Links X（跳舞链）\_WhereIsHeroFrom 的博客》](https://blog.csdn.net/whereisherofrom/article/details/79220897)
-- [跳跃的舞者，舞蹈链（Dancing Links）算法——求解精确覆盖问题 - 万仓一黍](https://www.cnblogs.com/grenet/p/3145800.html)
-- [DLX 算法一览 - zhangjianjunab](https://blog.csdn.net/zhangjianjunab/article/details/83688681)
-- [搜索：DLX 算法 - 静听风吟。](https://www.cnblogs.com/aininot260/p/9629926.html)
-- [《算法竞赛入门经典 - 训练指南》](https://book.douban.com/subject/35431537/)
+-   [夜深人静写算法（九）- Dancing Links X（跳舞链）\_WhereIsHeroFrom 的博客》](https://blog.csdn.net/whereisherofrom/article/details/79220897)
+-   [跳跃的舞者，舞蹈链（Dancing Links）算法——求解精确覆盖问题 - 万仓一黍](https://www.cnblogs.com/grenet/p/3145800.html)
+-   [DLX 算法一览 - zhangjianjunab](https://blog.csdn.net/zhangjianjunab/article/details/83688681)
+-   [搜索：DLX 算法 - 静听风吟。](https://www.cnblogs.com/aininot260/p/9629926.html)
+-   [《算法竞赛入门经典 - 训练指南》](https://book.douban.com/subject/35431537/)
 
 ## 注释
 

@@ -8,9 +8,8 @@
 
 ### 扩展欧几里得法
 
-???+note "实现"
+???+ note "实现"
     === "C++"
-    
         ```cpp
         void exgcd(int a, int b, int& x, int& y) {
           if (b == 0) {
@@ -23,14 +22,16 @@
         ```
     
     === "Python"
-    
         ```python
-        def exgcd(a, b, x, y):
-          if b == 0:
-              x, y = 1, 0
-              return
-          exgcd(b, a % b, y, x)
-          y = y - (a // b * x)
+        def exgcd(a, b):
+            if b == 0:
+                x = 1
+                y = 0
+                return x, y
+            x1, y1 = exgcd(b, a % b)
+            x = y1
+            y = x1 - (a // b) * y1
+            return x, y
         ```
 
 扩展欧几里得法和求解 [线性同余方程](./linear-equation.md) 是一个原理，在这里不展开解释。
@@ -47,11 +48,10 @@
 
 然后我们就可以用快速幂来求了。
 
-???+note "实现"
+???+ note "实现"
     === "C++"
-    
         ```cpp
-        inline int qpow(long long a, int b) {
+        int qpow(long long a, int b) {
           int ans = 1;
           a = (a % p + p) % p;
           for (; b; b >>= 1) {
@@ -63,20 +63,19 @@
         ```
     
     === "Python"
-    
         ```python
         def qpow(a, b):
-          ans = 1
-          a = (a % p + p) % p
-          while b:
-              if b & 1:
-                  ans = (a * ans) % p
-              a = (a * a) % p
-              b >>= 1
-          return ans
+            ans = 1
+            a = (a % p + p) % p
+            while b:
+                if b & 1:
+                    ans = (a * ans) % p
+                a = (a * a) % p
+                b >>= 1
+            return ans
         ```
 
-注意使用 [费马小定理](./fermat.md) 需要限制 $b$ 是一个素数，而扩展欧几里得算法只要求 $\gcd(a, p) = 1$。
+注意：快速幂法使用了 [费马小定理](./fermat.md)，要求 $b$ 是一个素数；而扩展欧几里得法只要求 $\gcd(a, b) = 1$。
 
 ### 线性求逆元
 
@@ -86,7 +85,7 @@
 
 首先，很显然的 $1^{-1} \equiv 1 \pmod p$；
 
-???+note "证明"
+???+ note "证明"
     对于 $\forall p \in \mathbf{Z}$，有 $1 \times 1 \equiv 1 \pmod p$ 恒成立，故在 $p$ 下 $1$ 的逆元是 $1$，而这是推算出其他情况的基础。
 
 其次对于递归情况 $i^{-1}$，我们令 $k = \lfloor \frac{p}{i} \rfloor$，$j = p \bmod i$，有 $p = ki + j$。再放到 $\mod p$ 意义下就会得到：$ki+j \equiv 0 \pmod p$；
@@ -112,9 +111,8 @@ i^{-1} \equiv \begin{cases}
 \end{cases} \pmod p
 $$
 
-???+note "实现"
+???+ note "实现"
     === "C++"
-    
         ```cpp
         inv[1] = 1;
         for (int i = 2; i <= n; ++i) {
@@ -123,7 +121,6 @@ $$
         ```
     
     === "Python"
-    
         ```python
         inv[1] = 1
         for i in range(2, n + 1):
@@ -154,9 +151,8 @@ $$
 
 所以我们就在 $O(n + \log p)$ 的时间内计算出了 $n$ 个数的逆元。
 
-???+note "实现"
+???+ note "实现"
     === "C++"
-    
         ```cpp
         s[0] = 1;
         for (int i = 1; i <= n; ++i) s[i] = s[i - 1] * a[i] % p;
@@ -167,7 +163,6 @@ $$
         ```
     
     === "Python"
-    
         ```python
         s[0] = 1
         for i in range(1, n + 1):

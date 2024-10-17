@@ -30,8 +30,8 @@
     $n\le 40000,k\le 20000,w_i\le 1000$
 
 由于这里查询的是树上距离为 $[0,k]$ 的点对数量，所以我们用线段树来支持维护和查询。
-??? note "参考代码"
 
+??? note "参考代码"
     ```cpp
     --8<-- "docs/graph/code/tree-divide/tree-divide_2.cpp"
     ```
@@ -45,15 +45,15 @@
 
 考虑到点分治过程中，我们只需要分别考虑统计：
 
-1. 子树中以当前根节点为端点的路径对根的贡献
-2. lca 为当前根节点的路径对子树内每个点的贡献
+1.  子树中以当前根节点为端点的路径对根的贡献
+2.  lca 为当前根节点的路径对子树内每个点的贡献
 
 1 部分比较好办，由于点分治中，递归层数不超过 $\log{n}$，每一层我们都可以遍历全部子树，这个时候就可以使用 $\mathit{sum_i}$ 的定义式来在遍历子树的过程中顺便统计了。
 
 而针对 2 部分，设当前根节点 $u$ 的一个子节点为 $d$,$d$ 的子树里任取一个点为 $v$，那么 $v$ 的答案可以分为两部分：
 
-1. $(u, v)$ 路径上出现过的颜色，数量设为 $\mathit{num}$，$u$ 除了 $d$ 以外的其他所有子树的总大小设为 $\mathit{siz1}$, 那么这些出现过的颜色对 $v$ 的答案贡献为 $\mathit{num}\times \mathit{siz1}$。
-2. $(u, v)$ 路径上没有出现过的颜色 $j$，它们的贡献来自于 $u$ 除了 $d$ 以外的其他所有子树的 $\mathit{cnt_j}$，这部分答案为 $\sum_{j \notin (u, v)} \mathit{cnt_j}$。
+1.  $(u, v)$ 路径上出现过的颜色，数量设为 $\mathit{num}$，$u$ 除了 $d$ 以外的其他所有子树的总大小设为 $\mathit{siz1}$, 那么这些出现过的颜色对 $v$ 的答案贡献为 $\mathit{num}\times \mathit{siz1}$。
+2.  $(u, v)$ 路径上没有出现过的颜色 $j$，它们的贡献来自于 $u$ 除了 $d$ 以外的其他所有子树的 $\mathit{cnt_j}$，这部分答案为 $\sum_{j \notin (u, v)} \mathit{cnt_j}$。
 
 以上是全部统计思路，实现细节详见参考代码。
 
@@ -66,13 +66,11 @@
 
 与上面的点分治类似，我们选取一条边，把树尽量均匀地分成两部分（使边连接的两个子树的 $\mathit{size}$ 尽量接近）。然后递归处理左右子树，统计信息。
 
-ちょっとまって，这不行吧……
-
-考虑一个菊花图
+但是这是不行的，考虑一个菊花图：
 
 ![菊花图](./images/tree-divide1.svg)
 
-我们发现当一个点下有多个 $size$ 接近的儿子时，应用边分治的时间复杂度是无法接受的。
+我们发现当一个点下有多个 $\mathit{size}$ 接近的儿子时，应用边分治的时间复杂度是无法接受的。
 
 如果这个图是个二叉树，就可以避免上面菊花图中应用边分治的弊端。因此我们考虑把一个多叉树转化成二叉树。
 
@@ -104,13 +102,14 @@
 
 有一个小技巧：每次用递归上一层的总大小 $\mathit{tot}$ 减去上一层的点的重儿子大小，得到的就是这一层的总大小。这样求重心就只需一次 DFS 了。
 
-???+note "参考代码"
+???+ note "参考代码"
     ```cpp
-    #include <bits/stdc++.h>
-    
+    #include <algorithm>
+    #include <iostream>
+    #include <vector>
     using namespace std;
     
-    typedef vector<int>::iterator IT;
+    using IT = vector<int>::iterator;
     
     struct Edge {
       int to, nxt, val;
@@ -161,7 +160,7 @@
       maxp = 0x7f7f7f7f;
       getG(now, 0);
       int g = root;
-      vis[g] = 1;
+      vis[g] = true;
       for (int i = head[g]; i; i = e[i].nxt) {
         int vs = e[i].to;
         if (vis[vs]) continue;

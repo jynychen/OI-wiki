@@ -1,6 +1,6 @@
 ## 连分数
 
-**连分数** 是实数作为有理数的特定收敛序列的表示。它们在竞争性编程（competitive programming）中很有用，因为它们易于计算，并且可以有效地用于在分母不超过给定值的所有数字中，找到基础实数（underlying real number）的最佳可能有理近似（best possible rational approximation）。
+**连分数** 是实数作为有理数的特定收敛序列的表示。它们在算法竞赛（competitive programming）中很有用，因为它们易于计算，并且可以有效地用于在分母不超过给定值的所有数字中，找到基础实数（underlying real number）的最佳可能有理近似（best possible rational approximation）。
 
 除此之外，连分数与欧几里得算法密切相关，这使得它们在一系列数论问题中非常有用。
 
@@ -56,7 +56,7 @@ $[a_0,a_1,a_2,a_3]=[a_0,a_1,a_2,a_3-1,1]$
 
 简单连分数的值，一定大于偶数的渐进分数，一定小于奇数的渐进分数。无限简单连分数一定收敛。
 
-仿照一般分数的概念，第 $0$ 项是 $0$ 的连分数称为“真分数”。显然如果这之后的所有变元都大于等于 $1$，那么得到的真分数一定落在 $0$ 到 $1$ 之间。
+仿照一般分数的概念，第 $0$ 项是 $0$ 的连分数称为「真分数」。显然如果这之后的所有变元都大于等于 $1$，那么得到的真分数一定落在 $0$ 到 $1$ 之间。
 
 ### 无限连分数
 
@@ -88,7 +88,7 @@ $$
 
 ### 定义
 
-在上面的定义中，有理数 $r_0, r_1, r_2, \dots$ 称为 $r$ 的 **渐进分数**（convergents，意为“收敛”）。
+在上面的定义中，有理数 $r_0, r_1, r_2, \dots$ 称为 $r$ 的 **渐进分数**（convergents，意为「收敛」）。
 
 相应地，单个 $r_k = [a_0; a_1, \dots, a_k] = \frac{p_k}{q_k}$ 称为 $r$ 的第 $k$ 个渐进分数。
 
@@ -113,7 +113,7 @@ $$
 
 ### 定义
 
-设 $r_k = [a_0; a_1, \dots, a_{k-1}, a_k]$。对于 $1 \leq t \leq a_k$，$[a_0; a_1, \dots, a_{k-1}, t]$ 称为 **中间分数**（semiconvergents，“semi”意为“半”）。
+设 $r_k = [a_0; a_1, \dots, a_{k-1}, a_k]$。对于 $1 \leq t \leq a_k$，$[a_0; a_1, \dots, a_{k-1}, t]$ 称为 **中间分数**（semiconvergents，「semi」意为「半」）。
 
 通常将大于 $r$ 的分数称为 **上**（upper）渐进分数或中间分数，将小于 $r$ 者称为 **下**（lower）渐进分数或中间分数。
 
@@ -155,9 +155,9 @@ $$
 
 如果要求 $(0,1)$ 区间内某个数的简单连分数表示（第 $0$ 项为 $0$），只需：
 
-- 取倒数，得到的余项大于 $1$。
-- 取整得到整数部分为部分商，小数部分在 $0$ 到 $1$ 之间。
-- 对小数部分重复上述操作。
+-   取倒数，得到的余项大于 $1$。
+-   取整得到整数部分为部分商，小数部分在 $0$ 到 $1$ 之间。
+-   对小数部分重复上述操作。
 
 这样就得到了相应的表示。
 
@@ -184,20 +184,18 @@ $$
 由此，$\frac{p_k}{q_k} = [a_0; a_1, \dots, a_k]$ 的 $\gcd(p_k, q_k) = 1$。因此，渐进分数总是不可约的。
 
 === "C++"
-
     ```cpp
     auto fraction(int p, int q) {
-        vector<int> a;
-        while(q) {
-            a.push_back(p / q);
-            tie(p, q) = make_pair(q, p % q);
-        }
-        return a;
+      vector<int> a;
+      while (q) {
+        a.push_back(p / q);
+        tie(p, q) = make_pair(q, p % q);
+      }
+      return a;
     }
     ```
 
 === "Python"
-
     ```py
     def fraction(p, q):
         a = []
@@ -207,7 +205,7 @@ $$
         return a
     ```
 
-如果规定第 $0$ 项是该数的取整，那么全体实数都有“唯一的简单连分数表示”。其中：
+如果规定第 $0$ 项是该数的取整，那么全体实数都有「唯一的简单连分数表示」。其中：
 
 如果两个无限简单连分数的值相等，必然逐项相等。
 
@@ -254,7 +252,7 @@ $$
 
 只是形式上成立。第 $-1$ 项渐进分数是 1/0，没有实际意义。
 
-???+note "证明"
+???+ note "证明"
     可以注意到，$p_k$ 与 $q_k$ 对于 $a_k$ 和 $b_k$ 都是线性函数。这是因为，$a_k$ 和 $b_k$ 都只出现了一次，无论如何通分也不会有另一个 $a_k$ 或 $b_k$ 乘上去。于是通过待定系数，即可解得这个递推关系。
 
 ### 反序定理
@@ -275,7 +273,7 @@ $$
 \frac{p_k}{p_{k-1}}=[a_k,a_{k-1},\ldots,a_2]
 $$
 
-???+note "证明"
+???+ note "证明"
     对递推关系稍加改造，有：
     
     $$
@@ -306,8 +304,8 @@ $$
 \frac{p_{k+1}}{q_{k+1}}-\frac{p_k}{q_k}=\frac{(-1)^k}{q_{k+1}q_k}
 $$
 
-???+note "注"
-    可以观察到，式 $p_{k+1}q_k-q_{k+1}p_k$ 特别像一个行列式，完全可以按“行列式”理解。
+???+ note "注"
+    可以观察到，式 $p_{k+1}q_k-q_{k+1}p_k$ 特别像一个行列式，完全可以按「行列式」理解。
     
     渐进分数的递推关系很像行列式的列变换。行列式一列加到另一列上不改变它的值，两列交换则反号。
 
@@ -331,7 +329,7 @@ $$
 
 对于大于 1 的实数 x，x 的渐进分数的倒数恰好是 $\frac{1}{x}$ 的渐进分数。显然，该定理也应该对于 0 到 1 之间的实数 x 成立。
 
-???+note "证明"
+???+ note "证明"
     $$
     x=[a_0,a_1,a_2,\ldots]
     $$
@@ -449,28 +447,26 @@ $$
 把渐进分数计算为一对序列 $p_{-2}, p_{-1}, p_0, p_1, \dots, p_k$ 和 $q_{-2}, q_{-1}, q_0, q_1, \dots, q_k$：
 
 === "C++"
-
     ```cpp
     auto convergents(vector<int> a) {
-        vector<int> p = {0, 1};
-        vector<int> q = {1, 0};
-        for(auto it: a) {
-            p.push_back(p[p.size() - 1] * it + p[p.size() - 2]);
-            q.push_back(q[q.size() - 1] * it + q[q.size() - 2]);
-        }
-        return make_pair(p, q);
+      vector<int> p = {0, 1};
+      vector<int> q = {1, 0};
+      for (auto it : a) {
+        p.push_back(p[p.size() - 1] * it + p[p.size() - 2]);
+        q.push_back(q[q.size() - 1] * it + q[q.size() - 2]);
+      }
+      return make_pair(p, q);
     }
     ```
 
 === "Python"
-
     ```py
     def convergents(a):
         p = [0, 1]
         q = [1, 0]
         for it in a:
-            p.append(p[-1]*it + p[-2])
-            q.append(q[-1]*it + q[-2])
+            p.append(p[-1] * it + p[-2])
+            q.append(q[-1] * it + q[-2])
         return p, q
     ```
 
@@ -622,16 +618,16 @@ $$
     $$
     
     其中 $g = \gcd(A, B)$。如果 $C$ 可被 $g$ 整除，则解为 $x = (-1)^{k-1}\frac{C}{g} q_{k-1}$ 和 $y = (-1)^{k}\frac{C}{g} p_{k-1}$。
-    === "Python"
     
+    === "Python"
         ```py
         # return (x, y) such that Ax+By=C
         # assumes that such (x, y) exists
         def dio(A, B, C):
             p, q = convergents(fraction(A, B))
-            C //= A // p[-1] # divide by gcd(A, B)
+            C //= A // p[-1]  # divide by gcd(A, B)
             t = (-1) if len(p) % 2 else 1
-            return t*C*q[-2], -t*C*p[-2]
+            return t * C * q[-2], -t * C * p[-2]
         ```
 
 ## 几何解释
@@ -770,38 +766,38 @@ $$
     并且 $t < a_i$ 成立，因为已经耗尽了从 $i+2$ 获得的半收敛，因此 $x + q_{i-1} + a_i q_i = x+q_{i+1}$ 大于 $N$。
     
     现在，可以将 $(\Delta x; \Delta y)$ 添加到 $(x;y)$ 中 $k = \lfloor \frac{N-x}{\Delta x} \rfloor$ 次，然后再超过 $N$，之后将尝试下一个中间分数。
+    
     === "C++"
-    
         ```cpp
-        // returns [ah, ph, qh] such that points r[i]=(ph[i], qh[i]) constitute upper convex hull
-        // of lattice points on 0 <= x <= N and 0 <= y <= r * x, where r = [a0; a1, a2, ...]
-        // and there are ah[i]-1 integer points on the segment between r[i] and r[i+1]
+        // returns [ah, ph, qh] such that points r[i]=(ph[i], qh[i]) constitute upper
+        // convex hull of lattice points on 0 <= x <= N and 0 <= y <= r * x, where r =
+        // [a0; a1, a2, ...] and there are ah[i]-1 integer points on the segment between
+        // r[i] and r[i+1]
         auto hull(auto a, int N) {
-            auto [p, q] = convergents(a);
-            int t = N / q.back();
-            vector ah = {t};
-            vector ph = {0, t*p.back()};
-            vector qh = {0, t*q.back()};
-    
-            for(int i = q.size() - 1; i >= 0; i--) {
-                if(i % 2) {
-                    while(qh.back() + q[i - 1] <= N) {
-                        t = (N - qh.back() - q[i - 1]) / q[i];
-                        int dp = p[i - 1] + t * p[i];
-                        int dq = q[i - 1] + t * q[i];
-                        int k = (N - qh.back()) / dq;
-                        ah.push_back(k);
-                        ph.push_back(ph.back() + k * dp);
-                        qh.push_back(qh.back() + k * dq);
-                    }
-                }
+          auto [p, q] = convergents(a);
+          int t = N / q.back();
+          vector ah = {t};
+          vector ph = {0, t * p.back()};
+          vector qh = {0, t * q.back()};
+        
+          for (int i = q.size() - 1; i >= 0; i--) {
+            if (i % 2) {
+              while (qh.back() + q[i - 1] <= N) {
+                t = (N - qh.back() - q[i - 1]) / q[i];
+                int dp = p[i - 1] + t * p[i];
+                int dq = q[i - 1] + t * q[i];
+                int k = (N - qh.back()) / dq;
+                ah.push_back(k);
+                ph.push_back(ph.back() + k * dp);
+                qh.push_back(qh.back() + k * dq);
+              }
             }
-            return make_tuple(ah, ph, qh);
+          }
+          return make_tuple(ah, ph, qh);
         }
         ```
     
     === "Python"
-    
         ```py
         # returns [ah, ph, qh] such that points r[i]=(ph[i], qh[i]) constitute upper convex hull
         # of lattice points on 0 <= x <= N and 0 <= y <= r * x, where r = [a0; a1, a2, ...]
@@ -810,14 +806,14 @@ $$
             p, q = convergents(a)
             t = N // q[-1]
             ah = [t]
-            ph = [0, t*p[-1]]
-            qh = [0, t*q[-1]]
+            ph = [0, t * p[-1]]
+            qh = [0, t * q[-1]]
             for i in reversed(range(len(q))):
                 if i % 2 == 1:
-                    while qh[-1] + q[i-1] <= N:
-                        t = (N - qh[-1] - q[i-1]) // q[i]
-                        dp = p[i-1] + t*p[i]
-                        dq = q[i-1] + t*q[i]
+                    while qh[-1] + q[i - 1] <= N:
+                        t = (N - qh[-1] - q[i - 1]) // q[i]
+                        dp = p[i - 1] + t * p[i]
+                        dq = q[i - 1] + t * q[i]
                         k = (N - qh[-1]) // dq
                         ah.append(k)
                         ph.append(ph[-1] + k * dp)
@@ -837,34 +833,38 @@ $$
     为了更一般地对待它，编写一个函数，该函数在 $0 \leq x \leq N$ 和 $y = \lfloor \frac{Ax+B}{C} \rfloor$ 上找到最佳点。
     
     这个问题的核心解决方案思想基本上重复了前面的问题，但不是使用下中间分数来偏离直线，而是使用上中间分数来接近直线，而不跨越直线，也不违反 $x \leq N$。不幸的是，与前一个问题不同，您需要确保在靠近 $y=\frac{Ax+B}{C}$ 线时不会越过该线，因此在计算中间分数的系数 $t$ 时应牢记这一点。
-    === "Python"
     
+    === "Python"
         ```py
         # (x, y) such that y = (A*x+B) // C,
         # Cy - Ax is max and 0 <= x <= N.
         def closest(A, B, C, N):
             # y <= (A*x + B)/C <=> diff(x, y) <= B
             def diff(x, y):
-                return C*y-A*x
+                return C * y - A * x
+        
             a = fraction(A, C)
             p, q = convergents(a)
             ph = [B // C]
             qh = [0]
             for i in range(2, len(q) - 1):
                 if i % 2 == 0:
-                    while diff(qh[-1] + q[i+1], ph[-1] + p[i+1]) <= B:
-                        t = 1 + (diff(qh[-1] + q[i-1], ph[-1] + p[i-1]) - B - 1) // abs(diff(q[i], p[i]))
-                        dp = p[i-1] + t*p[i]
-                        dq = q[i-1] + t*q[i]
+                    while diff(qh[-1] + q[i + 1], ph[-1] + p[i + 1]) <= B:
+                        t = 1 + (diff(qh[-1] + q[i - 1], ph[-1] + p[i - 1]) - B - 1) // abs(
+                            diff(q[i], p[i])
+                        )
+                        dp = p[i - 1] + t * p[i]
+                        dq = q[i - 1] + t * q[i]
                         k = (N - qh[-1]) // dq
                         if k == 0:
                             return qh[-1], ph[-1]
                         if diff(dq, dp) != 0:
                             k = min(k, (B - diff(qh[-1], ph[-1])) // diff(dq, dp))
-                        qh.append(qh[-1] + k*dq)
-                        ph.append(ph[-1] + k*dp)
+                        qh.append(qh[-1] + k * dq)
+                        ph.append(ph[-1] + k * dp)
             return qh[-1], ph[-1]
-    
+        
+        
         def solve(A, B, N):
             x, y = closest(A, N % A, B, N // A)
             return N // A - x, y
@@ -872,45 +872,44 @@ $$
 
 ### [June Challenge 2017 - Euler Sum](https://www.codechef.com/problems/ES)
 
-计算 $\sum\limits_{x=1}^N \lfloor ex \rfloor$，其中 $e = [2; 1, 2, 1, 1, 4, 1, 1, 6, 1, \dots, 1, 2n, 1, \dots]$ 是自然对数的底，$N \leq 10^{4000}$。
+计算 $\sum\limits_{x=1}^N \lfloor \mathrm{e}x \rfloor$，其中 $\mathrm{e} = [2; 1, 2, 1, 1, 4, 1, 1, 6, 1, \dots, 1, 2n, 1, \dots]$ 是自然对数的底，$N \leq 10^{4000}$。
 
 ??? "解答"
-    此和等于格点 $(x;y)$ 的数量，使得 $1 \leq x \leq N$ 和 $1 \leq y \leq ex$。
+    此和等于格点 $(x;y)$ 的数量，使得 $1 \leq x \leq N$ 和 $1 \leq y \leq \mathrm{e}x$。
     
-    在构造了 $y=ex$ 以下的点的凸包之后，可以使用 Pick 定理计算这个数：
+    在构造了 $y=\mathrm{e}x$ 以下的点的凸包之后，可以使用 Pick 定理计算这个数：
+    
     === "C++"
-    
         ```cpp
         // sum floor(k * x) for k in [1, N] and x = [a0; a1, a2, ...]
         int sum_floor(auto a, int N) {
-            N++;
-            auto [ah, ph, qh] = hull(a, N);
-    
-            // The number of lattice points within a vertical right trapezoid
-            // on points (0; 0) - (0; y1) - (dx; y2) - (dx; 0) that has
-            // a+1 integer points on the segment (0; y1) - (dx; y2).
-            auto picks = [](int y1, int y2, int dx, int a) {
-                int b = y1 + y2 + a + dx;
-                int A = (y1 + y2) * dx;
-                return (A - b + 2) / 2 + b - (y2 + 1);
-            };
-    
-            int ans = 0;
-            for(size_t i = 1; i < qh.size(); i++) {
-                ans += picks(ph[i - 1], ph[i], qh[i] - qh[i - 1], ah[i - 1]);
-            }
-            return ans - N;
+          N++;
+          auto [ah, ph, qh] = hull(a, N);
+        
+          // The number of lattice points within a vertical right trapezoid
+          // on points (0; 0) - (0; y1) - (dx; y2) - (dx; 0) that has
+          // a+1 integer points on the segment (0; y1) - (dx; y2).
+          auto picks = [](int y1, int y2, int dx, int a) {
+            int b = y1 + y2 + a + dx;
+            int A = (y1 + y2) * dx;
+            return (A - b + 2) / 2 + b - (y2 + 1);
+          };
+        
+          int ans = 0;
+          for (size_t i = 1; i < qh.size(); i++) {
+            ans += picks(ph[i - 1], ph[i], qh[i] - qh[i - 1], ah[i - 1]);
+          }
+          return ans - N;
         }
         ```
     
     === "Python"
-    
         ```py
         # sum floor(k * x) for k in [1, N] and x = [a0; a1, a2, ...]
         def sum_floor(a, N):
             N += 1
             ah, ph, qh = hull(a, N)
-    
+        
             # The number of lattice points within a vertical right trapezoid
             # on points (0; 0) - (0; y1) - (dx; y2) - (dx; 0) that has
             # a+1 integer points on the segment (0; y1) - (dx; y2).
@@ -918,12 +917,12 @@ $$
                 b = y1 + y2 + a + dx
                 A = (y1 + y2) * dx
                 return (A - b + 2) // 2 + b - (y2 + 1)
-    
+        
             ans = 0
             for i in range(1, len(qh)):
-                ans += picks(ph[i-1], ph[i], qh[i]-qh[i-1], ah[i-1])
+                ans += picks(ph[i - 1], ph[i], qh[i] - qh[i - 1], ah[i - 1])
             return ans - N
-        ``` 
+        ```
 
 ### [NAIPC 2019 - It's a Mod, Mod, Mod, Mod World](https://open.kattis.com/problems/itsamodmodmodmodworld)
 
@@ -937,20 +936,19 @@ $$
     $$
     
     然而，将 $x$ 从 $1$ 到 $N$ 的 $\lfloor rx \rfloor$ 相加，是我们能够从上一个问题中得出的结果。
-    === "C++"
     
+    === "C++"
         ```cpp
         void solve(int p, int q, int N) {
-            cout << p * N * (N + 1) / 2 - q * sum_floor(fraction(p, q), N) << "\n";
+          cout << p * N * (N + 1) / 2 - q * sum_floor(fraction(p, q), N) << "\n";
         }
         ```
     
     === "Python"
-    
         ```py
         def solve(p, q, N):
             return p * N * (N + 1) // 2 - q * sum_floor(fraction(p, q), N)
-        ``` 
+        ```
 
 ### [Library Checker - Sum of Floor of Linear](https://judge.yosupo.jp/problem/sum_of_floor_of_linear)
 
@@ -961,50 +959,53 @@ $$
     
     可以使用相同的方法来构造线 $y = \frac{Ax+B}{M}$ 以下的点的全凸包。
     
-    已经知道如何解决 $B = 0$ 的问题。此外，已经知道如何构造这个凸包，直到 $[0, N-1]$ 段上的这条线的最近格点（这在上面的“罪与罚”问题中完成）。
+    已经知道如何解决 $B = 0$ 的问题。此外，已经知道如何构造这个凸包，直到 $[0, N-1]$ 段上的这条线的最近格点（这在上面的「罪与罚」问题中完成）。
     
     现在应该注意到，一旦到达了离直线最近的点，就可以假设直线实际上通过了最近的点。因为在实际直线和稍微向下移动以通过最近点的直线之间，$[0, N-1]$ 上没有其他格点。
     
     也就是说，要在 $[0, N-1]$ 上的线 $y=\frac{Ax+B}{M}$ 下方构造全凸包，可以将其构造到与 $[0, N-1]$ 的线最近的点，然后继续，就像该线通过该点一样，重用用于构造 $B=0$ 的凸包的算法：
-    === "Python"
     
+    === "Python"
         ```py
         # hull of lattice (x, y) such that C*y <= A*x+B
         def hull(A, B, C, N):
             def diff(x, y):
-                return C*y-A*x
+                return C * y - A * x
+        
             a = fraction(A, C)
             p, q = convergents(a)
             ah = []
             ph = [B // C]
             qh = [0]
-    
+        
             def insert(dq, dp):
                 k = (N - qh[-1]) // dq
                 if diff(dq, dp) > 0:
                     k = min(k, (B - diff(qh[-1], ph[-1])) // diff(dq, dp))
                 ah.append(k)
-                qh.append(qh[-1] + k*dq)
-                ph.append(ph[-1] + k*dp)
-    
+                qh.append(qh[-1] + k * dq)
+                ph.append(ph[-1] + k * dp)
+        
             for i in range(1, len(q) - 1):
                 if i % 2 == 0:
-                    while diff(qh[-1] + q[i+1], ph[-1] + p[i+1]) <= B:
-                        t = (B - diff(qh[-1] + q[i+1], ph[-1] + p[i+1])) // abs(diff(q[i], p[i]))
-                        dp = p[i+1] - t*p[i]
-                        dq = q[i+1] - t*q[i]
+                    while diff(qh[-1] + q[i + 1], ph[-1] + p[i + 1]) <= B:
+                        t = (B - diff(qh[-1] + q[i + 1], ph[-1] + p[i + 1])) // abs(
+                            diff(q[i], p[i])
+                        )
+                        dp = p[i + 1] - t * p[i]
+                        dq = q[i + 1] - t * q[i]
                         if dq < 0 or qh[-1] + dq > N:
                             break
                         insert(dq, dp)
-    
+        
             insert(q[-1], p[-1])
-    
+        
             for i in reversed(range(len(q))):
                 if i % 2 == 1:
-                    while qh[-1] + q[i-1] <= N:
-                        t = (N - qh[-1] - q[i-1]) // q[i]
-                        dp = p[i-1] + t*p[i]
-                        dq = q[i-1] + t*q[i]
+                    while qh[-1] + q[i - 1] <= N:
+                        t = (N - qh[-1] - q[i - 1]) // q[i]
+                        dp = p[i - 1] + t * p[i]
+                        dq = q[i - 1] + t * q[i]
                         insert(dq, dp)
             return ah, ph, qh
         ```
@@ -1031,28 +1032,28 @@ $$
     由于 $m$ 是常量，可以除以它，并进一步将其重新表述为求解 $q$，这样 $1 \leq q \leq 10^9$ 和 $\frac{r}{m} q - k \geq 0$ 是可能的最小值。
     
     就连分数而言，这意味着 $\frac{k}{q}$ 是 $\frac{r}{m}$ 的最佳丢番图近似值，并且仅检查 $\frac{r}{m}$ 的下中间分数就足够了。
-    === "Python"
     
+    === "Python"
         ```py
-        # find Q that minimizes Q*r mod m for 1 <= k <= n < m 
+        # find Q that minimizes Q*r mod m for 1 <= k <= n < m
         def mod_min(r, n, m):
             a = fraction(r, m)
             p, q = convergents(a)
             for i in range(2, len(q)):
-                if i % 2 == 1 and (i + 1 == len(q) or q[i+1] > n):
-                    t = (n - q[i-1]) // q[i]
-                    return q[i-1] + t*q[i]
+                if i % 2 == 1 and (i + 1 == len(q) or q[i + 1] > n):
+                    t = (n - q[i - 1]) // q[i]
+                    return q[i - 1] + t * q[i]
         ```
 
 ## 习题
 
-- [UVa OJ - Continued Fractions](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=775)
-- [ProjectEuler+ #64: Odd period square roots](https://www.hackerrank.com/contests/projecteuler/challenges/euler064/problem)
-- [Codeforces Round #184 (Div. 2) - Continued Fractions](https://codeforces.com/contest/305/problem/B)
-- [Codeforces Round #201 (Div. 1) - Doodle Jump](https://codeforces.com/contest/346/problem/E)
-- [Codeforces Round #325 (Div. 1) - Alice, Bob, Oranges and Apples](https://codeforces.com/contest/585/problem/C)
-- [POJ Founder Monthly Contest 2008.03.16 - A Modular Arithmetic Challenge](http://poj.org/problem?id=3530)
-- [2019 Multi-University Training Contest 5 - fraction](http://acm.hdu.edu.cn/showproblem.php?pid=6624)
-- [SnackDown 2019 Elimination Round - Election Bait](https://www.codechef.com/SNCKEL19/problems/EBAIT)
+-   [UVa OJ - Continued Fractions](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=775)
+-   [ProjectEuler+ #64: Odd period square roots](https://www.hackerrank.com/contests/projecteuler/challenges/euler064/problem)
+-   [Codeforces Round #184 (Div. 2) - Continued Fractions](https://codeforces.com/contest/305/problem/B)
+-   [Codeforces Round #201 (Div. 1) - Doodle Jump](https://codeforces.com/contest/346/problem/E)
+-   [Codeforces Round #325 (Div. 1) - Alice, Bob, Oranges and Apples](https://codeforces.com/contest/585/problem/C)
+-   [POJ Founder Monthly Contest 2008.03.16 - A Modular Arithmetic Challenge](http://poj.org/problem?id=3530)
+-   [2019 Multi-University Training Contest 5 - fraction](http://acm.hdu.edu.cn/showproblem.php?pid=6624)
+-   [SnackDown 2019 Elimination Round - Election Bait](https://www.codechef.com/SNCKEL19/problems/EBAIT)
 
 **本页面主要译自博文 [Continued fractions](https://cp-algorithms.com/algebra/continued-fractions.html)，版权协议为 CC-BY-SA 4.0。**
