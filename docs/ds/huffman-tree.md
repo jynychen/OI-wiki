@@ -10,7 +10,7 @@ $$
 WPL=\sum_{i=1}^nw_il_i
 $$
 
-![](./images/huffman-tree-1.png)
+![](./images/huffman-tree-1.svg)
 
 如上图所示，其 WPL 计算过程与结果如下：
 
@@ -28,12 +28,12 @@ $$
 
 霍夫曼算法用于构造一棵霍夫曼树，算法步骤如下：
 
-1. **初始化**：由给定的 $n$ 个权值构造 $n$ 棵只有一个根节点的二叉树，得到一个二叉树集合 $F$。
-2. **选取与合并**：从二叉树集合 $F$ 中选取根节点权值 **最小的两棵** 二叉树分别作为左右子树构造一棵新的二叉树，这棵新二叉树的根节点的权值为其左、右子树根结点的权值和。
-3. **删除与加入**：从 $F$ 中删除作为左、右子树的两棵二叉树，并将新建立的二叉树加入到 $F$ 中。
-4. 重复 2、3 步，当集合中只剩下一棵二叉树时，这棵二叉树就是霍夫曼树。
+1.  **初始化**：由给定的 $n$ 个权值构造 $n$ 棵只有一个根节点的二叉树，得到一个二叉树集合 $F$。
+2.  **选取与合并**：从二叉树集合 $F$ 中选取根节点权值 **最小的两棵** 二叉树分别作为左右子树构造一棵新的二叉树，这棵新二叉树的根节点的权值为其左、右子树根结点的权值和。
+3.  **删除与加入**：从 $F$ 中删除作为左、右子树的两棵二叉树，并将新建立的二叉树加入到 $F$ 中。
+4.  重复 2、3 步，当集合中只剩下一棵二叉树时，这棵二叉树就是霍夫曼树。
 
-![](./images/huffman-tree-2.png)
+![](./images/huffman-tree-2.svg)
 
 ## 霍夫曼编码
 
@@ -47,20 +47,22 @@ $$
 
 霍夫曼树可用于构造 **最短的前缀编码**，即 **霍夫曼编码（Huffman Code）**，其构造步骤如下：
 
-1. 设需要编码的字符集为：$d_1,d_2,\dots,d_n$，他们在字符串中出现的频率为：$w_1,w_2,\dots,w_n$。
-2. 以 $d_1,d_2,\dots,d_n$ 作为叶结点，$w_1,w_2,\dots,w_n$ 作为叶结点的权值，构造一棵霍夫曼树。
-3. 规定哈夫曼编码树的左分支代表 $0$，右分支代表 $1$，则从根结点到每个叶结点所经过的路径组成的 $0$、$1$ 序列即为该叶结点对应字符的编码。
+1.  设需要编码的字符集为：$d_1,d_2,\dots,d_n$，他们在字符串中出现的频率为：$w_1,w_2,\dots,w_n$。
+2.  以 $d_1,d_2,\dots,d_n$ 作为叶结点，$w_1,w_2,\dots,w_n$ 作为叶结点的权值，构造一棵霍夫曼树。
+3.  规定哈夫曼编码树的左分支代表 $0$，右分支代表 $1$，则从根结点到每个叶结点所经过的路径组成的 $0$、$1$ 序列即为该叶结点对应字符的编码。
 
-![](./images/huffman-tree-3.png)
+![](./images/huffman-tree-3.svg)
 
 ## 示例代码
 
 ??? note "霍夫曼树的构建"
     ```C++
-    typedef struct HNode {
+    struct HNode {
       int weight;
       HNode *lchild, *rchild;
-    } * Htree;
+    };
+    
+    using Htree = HNode*;
     
     Htree createHuffmanTree(int arr[], int n) {
       Htree forest[N];
@@ -112,10 +114,12 @@ $$
 
 ??? note "计算构成霍夫曼树的 WPL"
     ```C++
-    typedef struct HNode {
+    struct HNode {
       int weight;
       HNode *lchild, *rchild;
-    } * Htree;
+    };
+    
+    using Htree = HNode*;
     
     int getWPL(Htree root, int len) {  // 递归实现，对于已经建好的霍夫曼树，求 WPL
       if (root == NULL)
@@ -154,10 +158,12 @@ $$
 
 ??? note "对于给定序列，计算霍夫曼编码"
     ```C++
-    typedef struct HNode {
+    struct HNode {
       int weight;
       HNode *lchild, *rchild;
-    } * Htree;
+    };
+    
+    using Htree = HNode*;
     
     void huffmanCoding(Htree root, int len, int arr[]) {  // 计算霍夫曼编码
       if (root != NULL) {

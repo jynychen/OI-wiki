@@ -1,4 +1,4 @@
-???+ warning
+???+ warning "提醒"
     本页面要介绍的不是 [**基数排序**](./radix-sort.md)。
 
 本页面将简要介绍计数排序。
@@ -13,9 +13,9 @@
 
 它的工作过程分为三个步骤：
 
-1. 计算每个数出现了几次；
-2. 求出每个数出现次数的 [前缀和](./prefix-sum.md)；
-3. 利用出现次数的前缀和，从右至左计算每个数的排名。
+1.  计算每个数出现了几次；
+2.  求出每个数出现次数的 [前缀和](./prefix-sum.md)；
+3.  利用出现次数的前缀和，从右至左计算每个数的排名。
 
 ### 计算前缀和的原因
 
@@ -29,7 +29,7 @@
 
 如果按照 $A$ 的逆序进行排列，那么显然排序后的数组将保持 $A$ 的原序（相同 key 值情况下），也即得到一种稳定的排序算法。
 
-![counting sort animate example](images/counting-sort-1-animate-example.svg)
+![counting sort animate example](images/counting-sort-animate.svg)
 
 ## 性质
 
@@ -64,29 +64,28 @@ $$
 $$
 
 === "C++"
-
     ```cpp
-    const int N = 100010;
-    const int W = 100010;
-
+    constexpr int N = 100010;
+    constexpr int W = 100010;
+    
     int n, w, a[N], cnt[W], b[N];
-
+    
     void counting_sort() {
-        memset(cnt, 0, sizeof(cnt));
-        for (int i = 1; i <= n; ++i) ++cnt[a[i]];
-        for (int i = 1; i <= w; ++i) cnt[i] += cnt[i - 1];
-        for (int i = n; i >= 1; --i) b[cnt[a[i]]--] = a[i];
+      memset(cnt, 0, sizeof(cnt));
+      for (int i = 1; i <= n; ++i) ++cnt[a[i]];
+      for (int i = 1; i <= w; ++i) cnt[i] += cnt[i - 1];
+      for (int i = n; i >= 1; --i) b[cnt[a[i]]--] = a[i];
     }
     ```
 
 === "Python"
-
     ```python
     N = W = 100010
     n = w = 0
     a = b = [0] * N
     cnt = [0] * W
-
+    
+    
     def counting_sort():
         for i in range(1, n + 1):
             cnt[a[i]] += 1

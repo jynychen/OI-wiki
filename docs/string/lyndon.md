@@ -24,16 +24,15 @@ Duval 算法运用了贪心的思想。算法过程中我们把串 $s$ 分成三
 
 我们来更详细地解释一下算法的过程。定义一个指针 $i$ 指向 $s_2$ 的首字符，则 $i$ 从 $1$ 遍历到 $n$（字符串长度）。在循环的过程中我们定义另一个指针 $j$ 指向 $s_3$ 的首字符，指针 $k$ 指向 $s_2$ 中我们当前考虑的字符（意义是 $j$ 在 $s_2$ 的上一个循环节中对应的字符）。我们的目标是将 $s[j]$ 添加到 $s_2$ 的末尾，这就需要将 $s[j]$ 与 $s[k]$ 做比较：
 
-1. 如果 $s[j]=s[k]$，则将 $s[j]$ 添加到 $s_2$ 末尾不会影响它的近似简单性。于是我们只需要让指针 $j,k$ 自增（移向下一位）即可。
-2. 如果 $s[j]>s[k]$，那么 $s_2s[j]$ 就变成了一个 Lyndon 串，于是我们将指针 $j$ 自增，而让 $k$ 指向 $s_2$ 的首字符，这样 $s_2$ 就变成了一个循环次数为 1 的新 Lyndon 串了。
-3. 如果 $s[j]<s[k]$，则 $s_2s[j]$ 就不是一个近似简单串了，那么我们就要把 $s_2$ 分解出它的一个 Lyndon 子串，这个 Lyndon 子串的长度将是 $j-k$，即它的一个循环节。然后把 $s_2$ 变成分解完以后剩下的部分，继续循环下去（注意，这个情况下我们没有改变指针 $j,k$），直到循环节被截完。对于剩余部分，我们只需要将进度「回退」到剩余部分的开头即可。
+1.  如果 $s[j]=s[k]$，则将 $s[j]$ 添加到 $s_2$ 末尾不会影响它的近似简单性。于是我们只需要让指针 $j,k$ 自增（移向下一位）即可。
+2.  如果 $s[j]>s[k]$，那么 $s_2s[j]$ 就变成了一个 Lyndon 串，于是我们将指针 $j$ 自增，而让 $k$ 指向 $s_2$ 的首字符，这样 $s_2$ 就变成了一个循环次数为 1 的新 Lyndon 串了。
+3.  如果 $s[j]<s[k]$，则 $s_2s[j]$ 就不是一个近似简单串了，那么我们就要把 $s_2$ 分解出它的一个 Lyndon 子串，这个 Lyndon 子串的长度将是 $j-k$，即它的一个循环节。然后把 $s_2$ 变成分解完以后剩下的部分，继续循环下去（注意，这个情况下我们没有改变指针 $j,k$），直到循环节被截完。对于剩余部分，我们只需要将进度「回退」到剩余部分的开头即可。
 
 ### 实现
 
 下面的代码返回串 $s$ 的 Lyndon 分解方案。
 
 === "C++"
-
     ```cpp
     // duval_algorithm
     vector<string> duval(string const& s) {
@@ -58,7 +57,6 @@ Duval 算法运用了贪心的思想。算法过程中我们把串 $s$ 分成三
     ```
 
 === "Python"
-
     ```python
     # duval_algorithm
     def duval(s):
@@ -93,7 +91,6 @@ Duval 算法运用了贪心的思想。算法过程中我们把串 $s$ 分成三
 于是我们在分解的过程中记录每一次的近似 Lyndon 串的开头即可。
 
 === "C++"
-
     ```cpp
     // smallest_cyclic_string
     string min_cyclic_string(string s) {
@@ -117,7 +114,6 @@ Duval 算法运用了贪心的思想。算法过程中我们把串 $s$ 分成三
     ```
 
 === "Python"
-
     ```python
     # smallest_cyclic_string
     def min_cyclic_string(s):
@@ -140,6 +136,6 @@ Duval 算法运用了贪心的思想。算法过程中我们把串 $s$ 分成三
 
 ## 习题
 
--   [UVA #719 - Glass Beads](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=660)
+-   [UVa #719 - Glass Beads](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=660)
 
     **本页面主要译自博文 [Декомпозиция Линдона. Алгоритм Дюваля. Нахождение наименьшего циклического сдвига](http://e-maxx.ru/algo/duval_algorithm) 与其英文翻译版 [Lyndon factorization](https://cp-algorithms.com/string/lyndon_factorization.html)。其中俄文版版权协议为 Public Domain + Leave a Link；英文版版权协议为 CC-BY-SA 4.0。**

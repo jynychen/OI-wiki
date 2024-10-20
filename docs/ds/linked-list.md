@@ -23,9 +23,8 @@
 
 ![](images/list.svg)
 
-???+note "实现"
+???+ note "实现"
     === "C++"
-    
         ```c++
         struct Node {
           int value;
@@ -34,10 +33,9 @@
         ```
     
     === "Python"
-    
         ```python
         class Node:
-            def __init__(self, value = None, next = None): 
+            def __init__(self, value=None, next=None):
                 self.value = value
                 self.next = next
         ```
@@ -48,9 +46,8 @@
 
 ![](images/double-list.svg)
 
-???+note "实现"
+???+ note "实现"
     === "C++"
-    
         ```c++
         struct Node {
           int value;
@@ -60,10 +57,9 @@
         ```
     
     === "Python"
-    
         ```python
         class Node:
-            def __init__(self, value = None, left = None, right = None): 
+            def __init__(self, value=None, left=None, right=None):
                 self.value = value
                 self.left = left
                 self.right = right
@@ -75,21 +71,20 @@
 
 流程大致如下：
 
-1. 初始化待插入的数据 `node`；
-2. 将 `node` 的 `next` 指针指向 `p` 的下一个结点；
-3. 将 `p` 的 `next` 指针指向 `node`。
+1.  初始化待插入的数据 `node`；
+2.  将 `node` 的 `next` 指针指向 `p` 的下一个结点；
+3.  将 `p` 的 `next` 指针指向 `node`。
 
 具体过程可参考下图：
 
-1. ![](./images/list-insert-1.svg)
-2. ![](./images/list-insert-2.svg)
-3. ![](./images/list-insert-3.svg)
+1.  ![](./images/list-insert-1.svg)
+2.  ![](./images/list-insert-2.svg)
+3.  ![](./images/list-insert-3.svg)
 
 代码实现如下：
 
-???+note "实现"
+???+ note "实现"
     === "C++"
-    
         ```c++
         void insertNode(int i, Node *p) {
           Node *node = new Node;
@@ -100,7 +95,6 @@
         ```
     
     === "Python"
-    
         ```python
         def insertNode(i, p):
             node = Node()
@@ -115,23 +109,22 @@
 
 大致流程如下：
 
-1. 初始化待插入的数据 `node`；
-2. 判断给定链表 `p` 是否为空；
-3. 若为空，则将 `node` 的 `next` 指针和 `p` 都指向自己；
-4. 否则，将 `node` 的 `next` 指针指向 `p` 的下一个结点；
-5. 将 `p` 的 `next` 指针指向 `node`。
+1.  初始化待插入的数据 `node`；
+2.  判断给定链表 `p` 是否为空；
+3.  若为空，则将 `node` 的 `next` 指针和 `p` 都指向自己；
+4.  否则，将 `node` 的 `next` 指针指向 `p` 的下一个结点；
+5.  将 `p` 的 `next` 指针指向 `node`。
 
 具体过程可参考下图：
 
-1. ![](./images/list-insert-cyclic-1.svg)
-2. ![](./images/list-insert-cyclic-2.svg)
-3. ![](./images/list-insert-cyclic-3.svg)
+1.  ![](./images/list-insert-cyclic-1.svg)
+2.  ![](./images/list-insert-cyclic-2.svg)
+3.  ![](./images/list-insert-cyclic-3.svg)
 
 代码实现如下：
 
-???+note "实现"
+???+ note "实现"
     === "C++"
-    
         ```c++
         void insertNode(int i, Node *p) {
           Node *node = new Node;
@@ -148,7 +141,6 @@
         ```
     
     === "Python"
-    
         ```python
         def insertNode(i, p):
             node = Node()
@@ -168,19 +160,18 @@
 
 大致流程如下：
 
-1. 初始化待插入的数据 `node`；
-2. 判断给定链表 `p` 是否为空；
-3. 若为空，则将 `node` 的 `left` 和 `right` 指针，以及 `p` 都指向自己；
-4. 否则，将 `node` 的 `left` 指针指向 `p`;
-5. 将 `node` 的 `right` 指针指向 `p` 的右结点；
-6. 将 `p` 右结点的 `left` 指针指向 `node`；
-7. 将 `p` 的 `right` 指针指向 `node`。
+1.  初始化待插入的数据 `node`；
+2.  判断给定链表 `p` 是否为空；
+3.  若为空，则将 `node` 的 `left` 和 `right` 指针，以及 `p` 都指向自己；
+4.  否则，将 `node` 的 `left` 指针指向 `p`;
+5.  将 `node` 的 `right` 指针指向 `p` 的右结点；
+6.  将 `p` 右结点的 `left` 指针指向 `node`；
+7.  将 `p` 的 `right` 指针指向 `node`。
 
 代码实现如下：
 
-???+note "实现"
+???+ note "实现"
     === "C++"
-    
         ```c++
         void insertNode(int i, Node *p) {
           Node *node = new Node;
@@ -199,7 +190,6 @@
         ```
     
     === "Python"
-    
         ```python
         def insertNode(i, p):
             node = Node()
@@ -223,22 +213,21 @@
 
 流程大致如下：
 
-1. 将 `p` 下一个结点的值赋给 `p`，以抹掉 `p->value`；
-2. 新建一个临时结点 `t` 存放 `p->next` 的地址；
-3. 将 `p` 的 `next` 指针指向 `p` 的下下个结点，以抹掉 `p->next`；
-4. 删除 `t`。此时虽然原结点 `p` 的地址还在使用，删除的是原结点 `p->next` 的地址，但 `p` 的数据被 `p->next` 覆盖，`p` 名存实亡。
+1.  将 `p` 下一个结点的值赋给 `p`，以抹掉 `p->value`；
+2.  新建一个临时结点 `t` 存放 `p->next` 的地址；
+3.  将 `p` 的 `next` 指针指向 `p` 的下下个结点，以抹掉 `p->next`；
+4.  删除 `t`。此时虽然原结点 `p` 的地址还在使用，删除的是原结点 `p->next` 的地址，但 `p` 的数据被 `p->next` 覆盖，`p` 名存实亡。
 
 具体过程可参考下图：
 
-1. ![](./images/list-delete-1.svg)
-2. ![](./images/list-delete-2.svg)
-3. ![](./images/list-delete-3.svg)
+1.  ![](./images/list-delete-1.svg)
+2.  ![](./images/list-delete-2.svg)
+3.  ![](./images/list-delete-3.svg)
 
 代码实现如下：
 
-???+note "实现"
+???+ note "实现"
     === "C++"
-    
         ```c++
         void deleteNode(Node *p) {
           p->value = p->next->value;
@@ -249,7 +238,6 @@
         ```
     
     === "Python"
-    
         ```python
         def deleteNode(p):
             p.value = p.next.value
@@ -260,17 +248,16 @@
 
 流程大致如下：
 
-1. 将 `p` 左结点的右指针指向 `p` 的右节点；
-2. 将 `p` 右结点的左指针指向 `p` 的左节点；
-3. 新建一个临时结点 `t` 存放 `p` 的地址；
-4. 将 `p` 的右节点地址赋给 `p`，以避免 `p` 变成悬垂指针；
-5. 删除 `t`。
+1.  将 `p` 左结点的右指针指向 `p` 的右节点；
+2.  将 `p` 右结点的左指针指向 `p` 的左节点；
+3.  新建一个临时结点 `t` 存放 `p` 的地址；
+4.  将 `p` 的右节点地址赋给 `p`，以避免 `p` 变成悬垂指针；
+5.  删除 `t`。
 
 代码实现如下：
 
-???+note "实现"
+???+ note "实现"
     === "C++"
-    
         ```c++
         void deleteNode(Node *&p) {
           p->left->right = p->right;
@@ -282,7 +269,6 @@
         ```
     
     === "Python"
-    
         ```python
         def deleteNode(p):
             p.left.right = p.right

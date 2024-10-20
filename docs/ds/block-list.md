@@ -1,6 +1,6 @@
 author: HeRaNO, konnyakuxzy, littlefrog
 
-[![./images/kuaizhuanglianbiao.png](./images/kuaizhuanglianbiao.png "./images/kuaizhuanglianbiao.png")](./images/kuaizhuanglianbiao.png "./images/kuaizhuanglianbiao.png")
+![./images/kuaizhuanglianbiao.png](./images/kuaizhuanglianbiao.png "./images/kuaizhuanglianbiao.png")
 
 块状链表大概就长这样……
 
@@ -9,7 +9,7 @@ author: HeRaNO, konnyakuxzy, littlefrog
 所以我们这么定义结构体，代码见下。
 其中 `sqn` 表示 `sqrt(n)` 即 $\sqrt{n}$，`pb` 表示 `push_back`，即在这个 `node` 中加入一个元素。
 
-???+note "实现"
+???+ note "实现"
     ```cpp
     struct node {
       node* nxt;
@@ -35,7 +35,7 @@ author: HeRaNO, konnyakuxzy, littlefrog
 其实不然，把 $\sqrt{n}$ 设置为一个定值即可。比如题目给的范围是 $10^6$，那么 $\sqrt{n}$ 就设置为大小为 $10^3$ 的常量，不用更改它。
 
 ```cpp
-list<vector<char> > orz_list;
+list<vector<char>> orz_list;
 ```
 
 ## STL 中的 `rope`
