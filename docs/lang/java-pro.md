@@ -72,7 +72,7 @@ public class Main {
     public static double nextDouble() throws IOException { in.nextToken(); return in.nval; }
     public static float nextFloat() throws IOException { in.nextToken(); return (float)in.nval; }
     public static int nextInt() throws IOException { in.nextToken(); return (int)in.nval; }
-    public static String next() throws IOException { return in.sval; }
+    public static String next() throws IOException { in.nextToken(); return in.sval; }
     public static long nextLong() throws Exception { in.nextToken(); return (long)in.nval;}
     
     // 使用示例
@@ -113,7 +113,7 @@ class Main {
         BigInteger a = new BigInteger("12345678910");  // 将字符串以十进制的形式创建 BigInteger 对象
         out.println(a);  // a 的值为 12345678910 
         BigInteger b = new BigInteger("1E", 16);  // 将字符串以指定进制的形式创建 BigInteger 对象
-        out.println(b);  // c 的值为 30 
+        out.println(b);  // b 的值为 30 
         out.close();
     }
 }
@@ -413,8 +413,8 @@ public class Main {
     }
 }
 ```
-关于米勒罗宾相关知识可以查阅[miller-rabin 素性测试](https://oi.wiki/math/number-theory/prime/#miller-rabin)。
 
+关于米勒罗宾相关知识可以查阅[Miller–Rabin 素性测试](../math/number-theory/prime.md#millerrabin-素性测试)。
 
 ## 基本数据类型与包装数据类型
 
@@ -492,7 +492,7 @@ integer.intValue();  // 抛出 java.lang.NullPointerException 异常
 
 | 父类成员访问属性 |           在父类中的含义           |                                  在子类中的含义                                   |
 |:----------------:|:----------------------------------:|:---------------------------------------------------------------------------------:|
-|      `public`      |            对所有类开放            |                                   对所有人类开放                                    |
+|      `public`      |            对所有类开放            |                                   对所有类开放                                    |
 |    `protected`     | 只有包内其它类、自己和子类可以访问 |                        只有包内其它类、自己和子类可以访问                         |
 |  缺省（`default`）   |       只有包内其它类可以访问       | 如果子类与父类在同一个包内，只有包内其它类可以访问；否则相当于 `private`，不能访问 |
 |     `private`      |          只有自己可以访问          |                                     不能访问                                      |
@@ -504,7 +504,7 @@ integer.intValue();  // 抛出 java.lang.NullPointerException 异常
 
 如果一个类型实现了接口，也可以称之为该接口的子类型。
 
-Java 中保存对象类型的变量是多态变量。“多态”这个术语（字面意思是许多形态）是指一个变量可以保存不同类型（即其声明的类型或任何子类型）的对象。
+Java 中保存对象类型的变量是多态变量。「多态」这个术语（字面意思是许多形态）是指一个变量可以保存不同类型（即其声明的类型或任何子类型）的对象。
 
 多态变量：
 
@@ -893,7 +893,7 @@ public class Main {
 
 ???+ warning "注意"
     不要在 `for/foreach` 遍历 `List` 的过程中删除其中的元素，否则会抛出异常。
-  
+    
     原因也很简单，`list.size()` 改变了，但在循环中已循环的次数却是没有随之变化。原来预计在下一个 `index` 的数据因为删除的操作变成了当前 `index` 的数据，运行下一个循环时操作的会变为原来预计在下下个 `index` 的数据，最终会导致操作的数据不符合预期。
 
 ### Queue
@@ -1019,6 +1019,82 @@ public class Main {
 
 }
 ```
+### Deque
+
+`Deque` 是 `Java` 中的双端队列，我们通常用其进行队列的操作以及栈的操作。
+
+#### 主要函数
+以下均用 `this` 代替当前 `Deque<Integer>` :
+
+|         函数名          |               功能               |
+|:-----------------------:|:--------------------------------:|
+|         `push(Integer val)`          |         将一个元素从队头加入this，等效于addFirst        |
+|    `pop()`     |        将队头元素删除，等效于removeFirst        |
+|  `addFirst(Integer val)`  |      将一个元素从队头加入this     |
+|  `removeFirst()`   | 将队头元素删除，并返回该元素  |
+|  `addLast(Integer val)`  |      将一个元素从队尾加入this     |
+|  `removeLast()`   | 将队尾元素删除，并返回该元素 |
+|  `offerFirst(Integer val)`  |      将一个元素从队头加入this     |
+|  `pollFirst()`   | 将队头元素删除，并返回该元素  |
+|  `offerLast(Integer val)`  |      将一个元素从队尾加入this     |
+|  `pollLast()`   | 将队尾元素删除，并返回该元素  |
+|  `add(Integer val)`  |      将一个元素从队尾加入this     |
+|  `offer(Integer val)`  |      将一个元素从队尾加入this     |
+|  `poll()`   | 将队头元素删除，并返回该元素  |
+|  `remove()`   | 将队头元素删除，并返回该元素  |
+|  `peekFirst()`   | 返回队头元素  |
+|  `peekLast()`   | 返回队尾元素 |
+
+`add`、`remove` 操作在遇到异常时会抛出异常，而`offer`、 `poll` 不会抛出异常。
+
+#### 栈的操作
+```java
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Main {
+    static Deque<Integer> stack = new ArrayDeque<>();
+    static int[] a = {1, 2, 3, 4, 5};
+
+    public static void main(String[] args) {
+        for (int v : a) {
+            stack.push(v);
+        }
+        while (!stack.isEmpty()) { //输出 5 4 3 2 1
+            System.out.println(stack.pop()); 
+        }
+    }
+}
+
+```
+#### 双端队列的操作
+```java
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Main {
+    static Deque<Integer> deque = new ArrayDeque<>();
+
+    static void insert() {
+        deque.addFirst(1);
+        deque.addFirst(2);
+        deque.addLast(3);
+        deque.addLast(4);
+    }
+
+    public static void main(String[] args) {
+        insert();
+        while (!deque.isEmpty()) { //输出 2 1 3 4
+            System.out.println(deque.poll());
+        }
+        insert();
+        while (!deque.isEmpty()) { //输出 4 3 1 2
+            System.out.println(deque.pollLast());
+        }
+    }
+}
+```
+
 
 ### Set
 
@@ -1055,7 +1131,64 @@ Set<Integer> s3 = new TreeSet<>();
 Set<Integer> s4 = new TreeSet<>((x, y) -> {return y - x;});  // 降序 
 ```
 
-#### 常用方法
+##### TreeSet的更多使用
+
+这些方法是`TreeSet`新创建并实现的，我们无法使用`Set`接口调用以下方法，因此我们创建方式如下:
+
+```java
+TreeSet<Integer> s3 = new TreeSet<>();
+TreeSet<Integer> s4 = new TreeSet<>((x, y) -> {return y - x;});  // 降序 
+```
+
+以下均用 `this` 代替当前 `TreeSet<Integer>` :
+
+|         函数名          |               功能               |
+|:-----------------------:|:--------------------------------:|
+|         `first()`          |         返回 this 中第一个元素，无则返回 null         |
+|         `last()`          |         返回 this 中最后一个元素，无则返回 null         |
+|    `floor(Integer val)`     |       返回集合中 <=val 的第一个元素，无则返回 null        |
+|  `ceiling(Integer val)`  |     返回集合中 >=val 的第一个元素，无则返回 null      |
+|  `higher(Integer val)`   | 返回集合中 >val 的第一个元素，无则返回 null|
+| `lower(Integer val)` |  返回集合中 <val 的第一个元素，无则返回 null  |
+| `pollFirst()` |    返回并删除 this 中第一个元素，无则返回 null     |
+| `pollLast()` |     返回并删除 this 中最后一个元素，无则返回 null     |
+
+
+代码示例：
+```java
+import java.util.TreeSet;
+
+public class Main {
+    static int[] a = {4,7,1,2,3,6};
+
+    public static void main(String[] args) {
+        TreeSet<Integer> set = new TreeSet<>();
+        for(int v:a) {
+            set.add(v);
+        }
+        Integer a2 = set.first();
+        System.out.println(a2); //返回 1
+        Integer a3 = set.last();
+        System.out.println(a3); //返回 7
+        Integer a4 = set.floor(5);
+        System.out.println(a4); //返回 4
+        Integer a5 = set.ceiling(6);
+        System.out.println(a5); //返回 6
+        Integer a6 = set.higher(7);
+        System.out.println(a6); //返回 null
+        Integer a7 = set.lower(2);
+        System.out.println(a7); //返回 1
+        Integer a8 = set.pollFirst();
+        System.out.println(a8); //返回 1
+        Integer a9 = set.pollLast();
+        System.out.println(a9); //返回 7
+    }
+}
+```
+
+
+
+#### Set常用方法
 
 以下均用 `this` 代替当前 `Set<Integer>` :
 
@@ -1251,8 +1384,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class Main {
-    static int a[] = new int[10];
-    static Integer b[] = new Integer[10];
+    static int[] a = new int[10];
+    static Integer[] b = new Integer[10];
     static int firstIdx, lastIdx;
 
     public static void main(String[] args) {
@@ -1293,7 +1426,7 @@ public class Main {
 **`Arrays.sort()` 底层函数：**
 
 1. 当你 `Arrays.sort` 的参数数组元素类型为基本数据类型（`byte`、`short`、`char`、`int`、`long`、`double`、`float`）时，默认为 `DualPivotQuicksort`（双轴快排），复杂度最坏可以达到 $O(n^2)$。
-2. 当你 `Arrays.sort` 的参数数组元素类型为非基本数据类型时），则默认为 `legacyMergeSort` 和 `TimSort` (归并排序），复杂度为$O(n\log n)$。
+2. 当你 `Arrays.sort` 的参数数组元素类型为非基本数据类型时，则默认为 `legacyMergeSort` 和 `TimSort`（归并排序），复杂度为$O(n\log n)$。
 
 可以通过如下代码验证：
 
@@ -1308,16 +1441,16 @@ public class Main {
     import java.io.PrintWriter;
     import java.util.Arrays;
     import java.util.StringTokenizer;
-    
+    
     public class Main {
         static class FastReader {
             StringTokenizer st;
             BufferedReader br;
-    
+    
             public FastReader() {
                 br = new BufferedReader(new InputStreamReader(System.in));
             }
-    
+    
             String next() {
                 while (st == null || !st.hasMoreElements()) {
                     try {
@@ -1328,19 +1461,19 @@ public class Main {
                 }
                 return st.nextToken();
             }
-    
+    
             int nextInt() {
                 return Integer.parseInt(next());
             }
-    
+    
             long nextLong() {
                 return Long.parseLong(next());
             }
-    
+    
             double nextDouble() {
                 return Double.parseDouble(next());
             }
-    
+    
             String nextLine() {
                 String str = "";
                 try {
@@ -1351,13 +1484,13 @@ public class Main {
                 return str;
             }
         }
-    
+    
         static PrintWriter out = new PrintWriter(System.out);
         static FastReader in = new FastReader();
-    
+    
         static void solve() {
             int n = in.nextInt();
-            Integer a[] = new Integer[n + 10];
+            Integer[] a = new Integer[n + 10];
             for (int i = 1; i <= n; i++) {
                 a[i] = in.nextInt();
             }
@@ -1375,7 +1508,7 @@ public class Main {
             }
             out.println("NO");
         }
-    
+    
         public static void main(String[] args) {
             int t = in.nextInt();
             while (t-- > 0) {
@@ -1396,8 +1529,8 @@ public class Main {
 import java.util.Arrays;
 
 public class Main {
-    static int a[] = new int[10];
-    static Integer b[] = new Integer[10];
+    static int[] a = new int[10];
+    static Integer[] b = new Integer[10];
     static int firstIdx, lastIdx;
     static int key;
 

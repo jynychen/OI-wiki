@@ -1,3 +1,5 @@
+autor: iamtwz, billchenchina, CBW2007, CCXXXI, chinggg, Enter-tainer, eyedeng, FFjet, gaojude, Great-designer, H-J-Granger, Henry-ZHR, hsfzLZH1, Ir1d, kenlig, Konano, ksyx, luoguyuntianming, Marcythm, Menci, NachtgeistW, ouuan, Peanut-Tang, qwqAutomaton, sshwy, StudyingFather, Tiphereth-A, TrisolarisHD, TRSWNCA, Xeonacid, Yuuko10032, Zhangjiacheng2006, Zhoier, Hszzzx, shenshuaijie, kfy666
+
 ## 定义
 
 快速幂，二进制取幂（Binary Exponentiation，也称平方法），是一个在 $\Theta(\log n)$ 的时间内计算 $a^n$ 的小技巧，而暴力的计算需要 $\Theta(n)$ 的时间。
@@ -9,6 +11,8 @@
 计算 $a$ 的 $n$ 次方表示将 $n$ 个 $a$ 乘在一起：$a^{n} = \underbrace{a \times a \cdots \times a}_{n\text{ 个 a}}$。然而当 $a,n$ 太大的时侯，这种方法就不太适用了。不过我们知道：$a^{b+c} = a^b \cdot a^c,\,\,a^{2b} = a^b \cdot a^b = (a^b)^2$。二进制取幂的想法是，我们将取幂的任务按照指数的 **二进制表示** 来分割成更小的任务。
 
 ## 过程
+
+### 迭代版本
 
 首先我们将 $n$ 表示为 2 进制，举一个例子：
 
@@ -54,12 +58,41 @@ $$
 
 这个算法的复杂度是 $\Theta(\log n)$ 的，我们计算了 $\Theta(\log n)$ 个 $2^k$ 次幂的数，然后花费 $\Theta(\log n)$ 的时间选择二进制为 1 对应的幂来相乘。
 
+### 递归版本
+
+上述迭代版本中，由于 $2^{i+1}$ 项依赖于 $2^i$，使得其转换为递归版本比较困难（一方面需要返回一个额外的 $a^{2^i}$，对函数来说无法实现一个只返回计算结果的接口；另一方面则是必须从低位往高位计算，即从高位往低位调用，这也造成了递归实现的困扰），下面则提供递归版本的思路。
+
+给定形式 $n_{t\dots i} = (n_tn_{t-1}\cdots n_i)_2$，即 $n_{t\dots i}$ 表示将 $n$ 的前 $t - i + 1$ 位二进制位当作一个二进制数，则有如下变换：
+
+$$
+\begin{aligned}
+n &= n_{t\dots 0} \\
+  &= 2\times n_{t\dots 1} + n_0\\
+  &= 2\times (2\times n_{t\dots 2} + n_1) + n_0 \\
+  &\cdots
+\end{aligned}
+$$
+
+那么有：
+
+$$
+\begin{aligned}
+a^n &= a^{n_{t\dots 0}} \\
+    &= a^{2\times n_{t\dots 1} + n_0} = \left(a^{n_{t\dots 1}}\right)^2  a^{n_0} \\
+    &= \left(a^{2\times n_{t\dots 2} + n_1}\right)^2  a^{n_0} = \left(\left(a^{n_{t\dots 2}}\right)^2 a^{n_1}\right)^2  a^{n_0} \\
+    &\cdots
+\end{aligned}
+$$
+
+如上所述，在递归时，对于不同的递归深度是相同的处理：$a^{n_{t\dots i}} = (a^{n_{t\dots (i+1)}})^2a^{n_i}$，即将当前递归的二进制数拆成两部分：最低位在递归出来时乘上去，其余部分则变成新的二进制数递归进入更深一层作相同的处理。
+
+可以观察到，每递归深入一层则二进制位减少一位，所以该算法的时间复杂度也为 $\Theta(\log n)$。
+
 ## 实现
 
 首先我们可以直接按照上述递归方法实现：
 
 === "C++"
-
     ```cpp
     long long binpow(long long a, long long b) {
       if (b == 0) return 1;
@@ -72,7 +105,6 @@ $$
     ```
 
 === "Python"
-
     ```python
     def binpow(a, b):
         if b == 0:
@@ -87,7 +119,6 @@ $$
 第二种实现方法是非递归式的。它在循环的过程中将二进制位为 1 时对应的幂累乘到答案中。尽管两者的理论复杂度是相同的，但第二种在实践过程中的速度是比第一种更快的，因为递归会花费一定的开销。
 
 === "C++"
-
     ```cpp
     long long binpow(long long a, long long b) {
       long long res = 1;
@@ -101,12 +132,11 @@ $$
     ```
 
 === "Python"
-
     ```python
     def binpow(a, b):
         res = 1
         while b > 0:
-            if (b & 1):
+            if b & 1:
                 res = res * a
             a = a * a
             b >>= 1
@@ -119,7 +149,7 @@ $$
 
 ### 模意义下取幂
 
-???+note "问题描述"
+???+ note "问题描述"
     计算 $x^n\bmod m$。
 
 这是一个非常常见的应用，例如它可以用于计算模意义下的乘法逆元。
@@ -127,7 +157,6 @@ $$
 既然我们知道取模的运算不会干涉乘法运算，因此我们只需要在计算的过程中取模即可。
 
 === "C++"
-
     ```cpp
     long long binpow(long long a, long long b, long long m) {
       a %= m;
@@ -142,13 +171,12 @@ $$
     ```
 
 === "Python"
-
     ```python
     def binpow(a, b, m):
         a = a % m
         res = 1
         while b > 0:
-            if (b & 1):
+            if b & 1:
                 res = res * a % m
             a = a * a % m
             b >>= 1
@@ -159,14 +187,14 @@ $$
 
 ### 计算斐波那契数
 
-???+note "问题描述"
+???+ note "问题描述"
     计算斐波那契数列第 $n$ 项 $F_n$。
 
-根据斐波那契数列的递推式 $F_n = F_{n-1} + F_{n-2}$，我们可以构建一个 $2\times 2$ 的矩阵来表示从 $F_i,F_{i+1}$ 到 $F_{i+1},F_{i+2}$ 的变换。于是在计算这个矩阵的 $n$ 次幂的时侯，我们使用快速幂的思想，可以在 $\Theta(\log n)$ 的时间内计算出结果。对于更多的细节参见 [斐波那契数列](./combinatorics/fibonacci.md)。
+根据斐波那契数列的递推式 $F_n = F_{n-1} + F_{n-2}$，我们可以构建一个 $2\times 2$ 的矩阵来表示从 $F_i,F_{i+1}$ 到 $F_{i+1},F_{i+2}$ 的变换。于是在计算这个矩阵的 $n$ 次幂的时侯，我们使用快速幂的思想，可以在 $\Theta(\log n)$ 的时间内计算出结果。对于更多的细节参见 [斐波那契数列](./combinatorics/fibonacci.md)，矩阵快速幂的实现参见 [矩阵加速递推](../math/linear-algebra/matrix.md#矩阵加速递推) 中的实现。
 
 ### 多次置换
 
-???+note "问题描述"
+???+ note "问题描述"
     给你一个长度为 $n$ 的序列和一个置换，把这个序列置换 $k$ 次。
 
 简单地把这个置换取 $k$ 次幂，然后把它应用到序列 $n$ 上即可。时间复杂度是 $O(n \log k)$ 的。
@@ -179,9 +207,9 @@ $$
 
 > 三维空间中，$n$ 个点 $p_i$，要求将 $m$ 个操作都应用于这些点。包含 3 种操作：
 >
-> 1. 沿某个向量移动点的位置（Shift）。
-> 2. 按比例缩放这个点的坐标（Scale）。
-> 3. 绕某个坐标轴旋转（Rotate）。
+> 1.  沿某个向量移动点的位置（Shift）。
+> 2.  按比例缩放这个点的坐标（Scale）。
+> 3.  绕某个坐标轴旋转（Rotate）。
 >
 > 还有一个特殊的操作，就是将一个操作序列重复 $k$ 次（Loop），这个序列中也可能有 Loop 操作（Loop 操作可以嵌套）。现在要求你在低于 $O(n \cdot \textit{length})$ 的时间内将这些变换应用到这个 $n$ 个点，其中 $\textit{length}$ 表示把所有的 Loop 操作展开后的操作序列的长度。
 
@@ -189,9 +217,9 @@ $$
 
 让我们来观察一下这三种操作对坐标的影响：
 
-1. Shift 操作：将每一维的坐标分别加上一个常量；
-2. Scale 操作：把每一维坐标分别乘上一个常量；
-3. Rotate 操作：这个有点复杂，我们不打算深入探究，不过我们仍然可以使用一个线性组合来表示新的坐标。
+1.  Shift 操作：将每一维的坐标分别加上一个常量；
+2.  Scale 操作：把每一维坐标分别乘上一个常量；
+3.  Rotate 操作：这个有点复杂，我们不打算深入探究，不过我们仍然可以使用一个线性组合来表示新的坐标。
 
 可以看到，每一个变换可以被表示为对坐标的线性运算，因此，一个变换可以用一个 $4\times 4$ 的矩阵来表示：
 
@@ -260,7 +288,7 @@ $$
 
 ### 定长路径计数
 
-???+note "问题描述"
+???+ note "问题描述"
     给一个有向图（边权为 1），求任意两点 $u,v$ 间从 $u$ 到 $v$，长度为 $k$ 的路径的条数。
 
 我们把该图的邻接矩阵 M 取 k 次幂，那么 $M_{i,j}$ 就表示从 $i$ 到 $j$ 长度为 $k$ 的路径的数目。该算法的复杂度是 $O(n^3 \log k)$。有关该算法的细节请参见 [矩阵](./linear-algebra/matrix.md) 页面。
@@ -281,7 +309,7 @@ $$
 
 #### 快速乘
 
-但是 $O(\log_2 m)$ 的“龟速乘”还是太慢了，这在很多对常数要求比较高的算法比如 Miller_Rabin 和 Pollard-Rho 中，就显得不够用了。所以我们要介绍一种可以处理模数在 `long long` 范围内、不需要使用黑科技 `__int128` 的、复杂度为 $O(1)$ 的“快速乘”。
+但是 $O(\log_2 m)$ 的「龟速乘」还是太慢了，这在很多对常数要求比较高的算法比如 Miller\_Rabin 和 Pollard-Rho 中，就显得不够用了。所以我们要介绍一种可以处理模数在 `long long` 范围内、不需要使用黑科技 `__int128` 的、复杂度为 $O(1)$ 的「快速乘」。
 
 我们发现：
 
@@ -320,8 +348,8 @@ long long binmul(long long a, long long b, long long m) {
 ??? note "前置技能"
     请先学习 [高精度](./bignum.md)
 
-???+note " 例题【NOIP2003 普及组改编·麦森数】（[原题在此](https://www.luogu.com.cn/problem/P1045)）"
-    题目大意：从文件中输入 P（1000&lt;P&lt;3100000），计算 $2^P−1$ 的最后 100 位数字（用十进制高精度数表示），不足 100 位时高位补 0。
+???+ note " 例题【NOIP2003 普及组改编·麦森数】（[原题在此](https://www.luogu.com.cn/problem/P1045)）"
+    题目大意：从文件中输入 $P$（$1000 < P < 3100000$），计算 $2^P−1$ 的最后 100 位数字（用十进制高精度数表示），不足 100 位时高位补 0。
 
 代码实现如下：
 
@@ -335,12 +363,12 @@ long long binmul(long long a, long long b, long long m) {
 
 #### 过程
 
-1. 选定一个数 $s$，预处理出 $a^0$ 到 $a^s$ 与 $a^{0\cdot s}$ 到 $a^{\lceil\frac ps\rceil\cdot s}$ 的值并存在一个（或两个）数组里；
-2. 对于每一次询问 $a^b\bmod p$，将 $b$ 拆分成 $\left\lfloor\dfrac bs\right\rfloor\cdot s+b\bmod s$，则 $a^b=a^{\lfloor\frac bs\rfloor\cdot s}\times a^{b\bmod s}$，可以 $O(1)$ 求出答案。
+1.  选定一个数 $s$，预处理出 $a^0$ 到 $a^s$ 与 $a^{0\cdot s}$ 到 $a^{\lceil\frac ps\rceil\cdot s}$ 的值并存在一个（或两个）数组里；
+2.  对于每一次询问 $a^b\bmod p$，将 $b$ 拆分成 $\left\lfloor\dfrac bs\right\rfloor\cdot s+b\bmod s$，则 $a^b=a^{\lfloor\frac bs\rfloor\cdot s}\times a^{b\bmod s}$，可以 $O(1)$ 求出答案。
 
 关于这个数 $s$ 的选择，我们一般选择 $\sqrt p$ 或者一个大小适当的 $2$ 的次幂（选择 $\sqrt p$ 可以使预处理较优，选择 $2$ 的次幂可以使用位运算优化/简化计算）。
 
-??? note " 参考代码"
+??? note "参考代码"
     ```cpp
     int pow1[65536], pow2[65536];
     
@@ -356,16 +384,16 @@ long long binmul(long long a, long long b, long long m) {
 
 ## 习题
 
-- [UVa 1230 - MODEX](http://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=3671)
-- [UVa 374 - Big Mod](http://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=310)
-- [UVa 11029 - Leading and Trailing](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1970)
-- [Codeforces - Parking Lot](http://codeforces.com/problemset/problem/630/I)
-- [SPOJ - The last digit](http://www.spoj.com/problems/LASTDIG/)
-- [SPOJ - Locker](http://www.spoj.com/problems/LOCKER/)
-- [LA - 3722 Jewel-eating Monsters](https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1723)
+-   [UVa 1230 - MODEX](http://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=3671)
+-   [UVa 374 - Big Mod](http://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=310)
+-   [UVa 11029 - Leading and Trailing](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1970)
+-   [Codeforces - Parking Lot](http://codeforces.com/problemset/problem/630/I)
+-   [SPOJ - The last digit](http://www.spoj.com/problems/LASTDIG/)
+-   [SPOJ - Locker](http://www.spoj.com/problems/LOCKER/)
+-   [LA - 3722 Jewel-eating Monsters](https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1723)
 -   [SPOJ - Just add it](http://www.spoj.com/problems/ZSUM/)
 
-    **本页面部分内容译自博文 [Бинарное возведение в степень](http://e-maxx.ru/algo/binary_pow) 与其英文翻译版 [Binary Exponentiation](https://cp-algorithms.com/algebra/binary-exp.html)。其中俄文版版权协议为 Public Domain + Leave a Link；英文版版权协议为 CC-BY-SA 4.0。**
+**本页面部分内容译自博文 [Бинарное возведение в степень](http://e-maxx.ru/algo/binary_pow) 与其英文翻译版 [Binary Exponentiation](https://cp-algorithms.com/algebra/binary-exp.html)。其中俄文版版权协议为 Public Domain + Leave a Link；英文版版权协议为 CC-BY-SA 4.0。**
 
 ## 参考资料与注释
 

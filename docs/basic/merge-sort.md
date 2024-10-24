@@ -21,9 +21,7 @@
 #### 实现
 
 === "C/C++"
-
     === "数组实现"
-        
         ```cpp
         void merge(const int *a, size_t aLen, const int *b, size_t bLen, int *c) {
           size_t i = 0, j = 0, k = 0;
@@ -42,11 +40,11 @@
           for (; j < bLen; ++j, ++k) c[k] = b[j];
         }
         ```
-
+    
     === "指针实现"
-        
         ```cpp
-        void merge(const int *aBegin, const int *aEnd, const int *bBegin, const int *bEnd, int *c) {
+        void merge(const int *aBegin, const int *aEnd, const int *bBegin,
+                   const int *bEnd, int *c) {
           while (aBegin != aEnd && bBegin != bEnd) {
             if (*bBegin < *aBegin) {
               *c = *bBegin;
@@ -65,14 +63,13 @@
     也可使用 `<algorithm>` 库的 `merge` 函数，用法与上述指针式写法的相同。
 
 === "Python"
-
     ```python
     def merge(a, b):
         i, j = 0, 0
         c = []
-        while(i < len(a) and j < len(b)):
+        while i < len(a) and j < len(b):
             # <!> 先判断 b[j] < a[i]，保证稳定性
-            if(b[j] < a[i]):
+            if b[j] < a[i]:
                 c.append(b[j])
                 j += 1
             else:
@@ -86,9 +83,9 @@
 
 ### 分治法实现归并排序
 
-1. 当数组长度为 $1$ 时，该数组就已经是有序的，不用再分解。
+1.  当数组长度为 $1$ 时，该数组就已经是有序的，不用再分解。
 
-2. 当数组长度大于 $1$ 时，该数组很可能不是有序的。此时将该数组分为两段，再分别检查两个数组是否有序（用第 1 条）。如果有序，则将它们合并为一个有序数组；否则对不有序的数组重复第 2 条，再合并。
+2.  当数组长度大于 $1$ 时，该数组很可能不是有序的。此时将该数组分为两段，再分别检查两个数组是否有序（用第 1 条）。如果有序，则将它们合并为一个有序数组；否则对不有序的数组重复第 2 条，再合并。
 
 用数学归纳法可以证明该流程可以将一个数组转变为有序数组。
 
@@ -99,7 +96,6 @@
 注意下面的代码所表示的区间分别是 $[l, r)$，$[l, mid)$，$[mid, r)$。
 
 === "C/C++"
-
     ```cpp
     void merge_sort(int *a, int l, int r) {
       if (r - l <= 1) return;
@@ -115,7 +111,6 @@
     ```
 
 === "Python"
-
     ```python
     def merge_sort(a, ll, rr):
         if rr - ll <= 1:
@@ -144,13 +139,12 @@
 
 重复上述过程直至数组只剩一个有序段，该段就是排好序的原数组。
 
-???+note "为什么是 $\le n$ 而不是 $= n$"
+???+ note " 为什么是 $\le n$ 而不是 $= n$"
     数组的长度很可能不是 $2^x$，此时在最后就可能出现长度不完整的段，可能出现最后一个段是独立的情况。
 
 #### 实现
 
 === "C/C++"
-
     ```cpp
     void merge_sort(int *a, size_t n) {
       int tmp[1024] = {};  // 请结合实际情况设置 tmp 数组的长度（与 a 相同），或使用
@@ -170,7 +164,6 @@
     ```
 
 === "Python"
-
     ```python
     def merge_sort(a):
         seg = 1
@@ -185,14 +178,14 @@
 
 ## 逆序对
 
+相关阅读和参考实现：[逆序对](../math/permutation.md#逆序数)
+
 逆序对是 $i < j$ 且 $a_i > a_j$ 的有序数对 $(i, j)$。
 
-排序后的数组无逆序对，归并排序的合并操作中，每次后段首元素被作为当前最小值取出时，前段剩余元素个数之和即是合并操作减少的逆序对数量；故归并排序计算逆序对数量的额外时间复杂度为 $\Theta (n \log n)$，对于 C/C++ 代码将 `merge` 过程的 `if(b[j] < a[i])` 部分加上 `cnt += aLen - i` 或 `cnt += aEnd - aBegin` 即可，对于 Python 代码将 `merge` 过程的 `if(b[j] < a[i]):` 部分加上 `cnt += len(a) - i` 即可。
-
-此外，逆序对计数即是将元素依次加入数组时统计当前大于其的元素数量，将数组离散化后即是区间求和问题，使用树状数组或线段树解决的时间复杂度为 $\operatorname{O} (n \log n)$ 且空间复杂度为 $\Theta (n)$。
+排序后的数组无逆序对。归并排序的合并操作中，每次后段首元素被作为当前最小值取出时，前段剩余元素个数之和即是合并操作减少的逆序对数量；故归并排序计算逆序对数量的时间复杂度为 $\Theta (n \log n)$。此外，逆序对计数还可以通过树状数组或线段树解决，时间复杂度也是 $O(n \log n)$；这一算法的详细解释参见 [树状数组](../ds/fenwick.md#全局逆序对全局二维偏序) 相应描述。两种算法的参考实现都在 [逆序对](../math/permutation.md#逆序数) 章节。
 
 ## 外部链接
 
-- [Merge Sort - GeeksforGeeks](https://www.geeksforgeeks.org/merge-sort/)
-- [归并排序 - 维基百科，自由的百科全书](https://zh.wikipedia.org/wiki/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F)
-- [逆序对 - 维基百科，自由的百科全书](https://zh.wikipedia.org/wiki/%E9%80%86%E5%BA%8F%E5%AF%B9)
+-   [Merge Sort - GeeksforGeeks](https://www.geeksforgeeks.org/merge-sort/)
+-   [归并排序 - 维基百科，自由的百科全书](https://zh.wikipedia.org/wiki/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F)
+-   [逆序对 - 维基百科，自由的百科全书](https://zh.wikipedia.org/wiki/%E9%80%86%E5%BA%8F%E5%AF%B9)

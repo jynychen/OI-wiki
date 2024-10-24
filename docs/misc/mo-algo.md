@@ -15,7 +15,7 @@ author: StudyingFather, Backl1ght, countercurrent-time, Ir1d, greyqz, MicDZ, ouu
 ## 实现
 
 ```cpp
-inline void move(int pos, int sign) {
+void move(int pos, int sign) {
   // update nowAns
 }
 
@@ -25,9 +25,9 @@ void solve() {
   for (int i = 0; i < m; ++i) {
     const query &q = querys[i];
     while (l > q.l) move(--l, 1);
-    while (r < q.r) move(r++, 1);
+    while (r < q.r) move(++r, 1);
     while (l < q.l) move(l++, -1);
-    while (r > q.r) move(--r, -1);
+    while (r > q.r) move(r--, -1);
     ans[q.id] = nowAns;
   }
 }
@@ -41,7 +41,7 @@ void solve() {
 
 接着就到了莫队算法的精髓了，下面我们用通俗易懂的初中方法来证明它的时间复杂度是 $O(n\sqrt{n})$；
 
-???+note "证明"
+???+ note "证明"
     证：令每一块中 $L$ 的最大值为 $\max_1,\max_2,\max_3, \cdots , \max_{\lceil\sqrt{n}\rceil}$。
     
     由第一次排序可知，$\max_1 \le \max_2 \le \cdots \le \max_{\lceil\sqrt{n}\rceil}$。
@@ -88,7 +88,7 @@ void solve() {
 
 ## 例题 & 代码
 
-???+note "例题[「国家集训队」小 Z 的袜子](https://www.luogu.com.cn/problem/P1494)"
+???+ note " 例题 [「国家集训队」小 Z 的袜子](https://www.luogu.com.cn/problem/P1494)"
     题目大意：
     
     有一个长度为 $n$ 的序列 $\{c_i\}$。现在给出 $m$ 个询问，每次给出两个数 $l,r$，从编号在 $l$ 到 $r$ 之间的数中随机选出两个不同的数，求两个数相等的概率。
@@ -105,15 +105,15 @@ void solve() {
 
 对于区间 $[i,i]$，由于区间只有一个元素，我们很容易就能知道答案。然后一步一步从当前区间（已知答案）向下一个区间靠近。
 
-我们设 $col[i]$ 表示当前颜色 $i$ 出现了多少次，$ans$ 当前共有多少种可行的配对方案（有多少种可以选到一双颜色相同的袜子），表示然后每次移动的时候更新答案——设当前颜色为 $k$，如果是增长区间就是 $ans$ 加上 $C_{col[k]+1}^2-C_{col[k]}^2$，如果是缩短就是 $ans$ 减去 $C_{col[k]}^2-C_{col[k]-1}^2$。
+我们设 $col[i]$ 表示当前颜色 $i$ 出现了多少次，$ans$ 当前共有多少种可行的配对方案（有多少种可以选到一双颜色相同的袜子），表示然后每次移动的时候更新答案——设当前颜色为 $k$，如果是增长区间就是 $ans$ 加上 $\dbinom{col[k]+1}{2}-\dbinom{col[k]}{2}$，如果是缩短就是 $ans$ 减去 $\dbinom{col[k]}{2}-\dbinom{col[k]-1}{2}$。
 
-而这个询问的答案就是 $\displaystyle \frac{ans}{C_{r-l+1}^2}$。
+而这个询问的答案就是 $\displaystyle \frac{ans}{\dbinom{r-l+1}{2}}$。
 
-这里有个优化：$\displaystyle C_a^2=\frac{a (a-1)}{2}$。
+这里有个优化：$\displaystyle \dbinom{a}{2}=\frac{a (a-1)}{2}$。
 
-所以 $\displaystyle C_{a+1}^2-C_a^2=\frac{(a+1) a}{2}-\frac{a (a-1)}{2}=\frac{a}{2}\cdot (a+1-a+1)=\frac{a}{2}\cdot 2=a$。
+所以 $\displaystyle \dbinom{a+1}{2}-\dbinom{a}{2}=\frac{(a+1) a}{2}-\frac{a (a-1)}{2}=\frac{a}{2}\cdot (a+1-a+1)=\frac{a}{2}\cdot 2=a$。
 
-所以 $C_{col[k]+1}^2-C_{col[k]}^2=col[k]$。
+所以 $\dbinom{col[k]+1}{2}-\dbinom{col[k]}{2}=col[k]$。
 
 算法总复杂度：$O(n\sqrt{n} )$
 
@@ -124,11 +124,11 @@ void solve() {
 ??? note "关于四个循环位置的讨论"
     莫队区间的移动过程，就相当于加入了 $[1,r]$ 的元素，并删除了 $[1,l-1]$ 的元素。因此，
     
-    - 对于 $l\le r$ 的情况，$[1,l-1]$ 的元素相当于被加入了一次又被删除了一次，$[l,r]$ 的元素被加入一次，$[r+1,+\infty)$ 的元素没有被加入。这个区间是合法区间。
-    - 对于 $l=r+1$ 的情况，$[1,r]$ 的元素相当于被加入了一次又被删除了一次，$[r+1,+\infty)$ 的元素没有被加入。这时这个区间表示空区间。
-    - 对于 $l>r+1$ 的情况，那么 $[r+1,l-1]$（这个区间非空）的元素被删除了一次但没有被加入，因此这个元素被加入的次数是负数。
+    -   对于 $l\le r$ 的情况，$[1,l-1]$ 的元素相当于被加入了一次又被删除了一次，$[l,r]$ 的元素被加入一次，$[r+1,+\infty)$ 的元素没有被加入。这个区间是合法区间。
+    -   对于 $l=r+1$ 的情况，$[1,r]$ 的元素相当于被加入了一次又被删除了一次，$[r+1,+\infty)$ 的元素没有被加入。这时这个区间表示空区间。
+    -   对于 $l>r+1$ 的情况，那么 $[r+1,l-1]$（这个区间非空）的元素被删除了一次但没有被加入，因此这个元素被加入的次数是负数。
     
-    因此，如果某时刻出现 $l>r+1$ 的情况，那么会存在一个元素，它的加入次数是负数。这在某些题目会出现问题，例如我们如果用一个 `set` 维护区间中的所有数，就会出现“需要删除 `set` 中不存在的元素”的问题。
+    因此，如果某时刻出现 $l>r+1$ 的情况，那么会存在一个元素，它的加入次数是负数。这在某些题目会出现问题，例如我们如果用一个 `set` 维护区间中的所有数，就会出现「需要删除 `set` 中不存在的元素」的问题。
     
     代码中的四个 while 循环一共有 $4!=24$ 种排列顺序。不妨设第一个循环用于操作左端点，就有以下 $12$ 种排列（另外 $12$ 种是对称的）。下表列出了这 12 种写法的正确性，还给出了错误写法的反例。
     
@@ -180,44 +180,41 @@ void solve() {
 
 排序代码：
 
-压行
+=== "压行"
+    ```cpp
+    // 这里有个小细节等下会讲
+    int unit;  // 块的大小
+    
+    struct node {
+      int l, r, id;
+    
+      bool operator<(const node &x) const {
+        return l / unit == x.l / unit
+                   ? (r == x.r ? 0 : ((l / unit) & 1) ^ (r < x.r))
+                   : l < x.l;
+      }
+    };
+    ```
 
-```cpp
-// 这里有个小细节等下会讲
-int unit;  // 块的大小
+=== "不压行"
+    ```cpp
+    struct node {
+      int l, r, id;
+    
+      bool operator<(const node &x) const {
+        if (l / unit != x.l / unit) return l < x.l;
+        // 注意下面两行不能写小于（大于）等于，否则会出错（详见下面的小细节）
+        if ((l / unit) & 1) return r < x.r;
+        return r > x.r;
+      }
+    };
+    ```
 
-struct node {
-  int l, r, id;
+???+ warning "小细节"
+    如果使用 `sort` 比较两个结构体，不能出现 $a < b$ 和 $b < a$ 同时为真的情况，否则会运行错误，详见 [常见错误](../contest/common-mistakes.md#会导致-re)。
 
-  bool operator<(const node &x) const {
-    return l / unit == x.l / unit
-               ? (r == x.r ? 0 : ((l / unit) & 1) ^ (r < x.r))
-               : l < x.l;
-  }
-};
-```
-
-不压行
-
-```cpp
-struct node {
-  int l, r, id;
-
-  bool operator<(const node &x) const {
-    if (l / unit != x.l / unit) return l < x.l;
-    if ((l / unit) & 1)
-      return r <
-             x.r;  // 注意这里和下面一行不能写小于（大于）等于，否则会出错（详见下面的小细节）
-    return r > x.r;
-  }
-};
-```
-
-!!! warning
-    小细节：如果使用 sort 比较两个函数，不能出现 $a < b$ 和 $b < a$ 同时为真的情况，否则会运行错误。
-
-对于压行版，如果没有 `r == x.r` 的特判，当 l 属于同一奇数块且 r 相等时，会出现上面小细节中的问题（自己手动模拟一下），对于压行版，如果写成小于（大于）等于，则也会出现同样的问题。
+对于压行版，如果没有 `r == x.r` 的特判，当 l 属于同一奇数块且 r 相等时，会出现上面小细节中的问题（自己手动模拟一下），对于不压行版，如果写成小于（大于）等于，则也会出现同样的问题。
 
 ## 参考资料
 
-- [莫队算法学习笔记 | Sengxian's Blog](https://blog.sengxian.com/algorithms/mo-s-algorithm)
+-   [莫队算法学习笔记 | Sengxian's Blog](https://blog.sengxian.com/algorithms/mo-s-algorithm)

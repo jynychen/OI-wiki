@@ -6,7 +6,7 @@
 
 ## 哈希函数
 
-要让键值对应到内存中的位置，就要为键值计算索引，也就是计算这个数据应该放到哪里。这个根据键值计算索引的函数就叫做哈希函数，也称散列函数。举个例子，如果键值是一个人的身份证号码，哈希函数就可以是号码的后四位，当然也可以是号码的前四位。生活中常用的“手机尾号”也是一种哈希函数。在实际的应用中，键值可能是更复杂的东西，比如浮点数、字符串、结构体等，这时候就要根据具体情况设计合适的哈希函数。哈希函数应当易于计算，并且尽量使计算出来的索引均匀分布。
+要让键值对应到内存中的位置，就要为键值计算索引，也就是计算这个数据应该放到哪里。这个根据键值计算索引的函数就叫做哈希函数，也称散列函数。举个例子，如果键值是一个人的身份证号码，哈希函数就可以是号码的后四位，当然也可以是号码的前四位。生活中常用的「手机尾号」也是一种哈希函数。在实际的应用中，键值可能是更复杂的东西，比如浮点数、字符串、结构体等，这时候就要根据具体情况设计合适的哈希函数。哈希函数应当易于计算，并且尽量使计算出来的索引均匀分布。
 
 能为 key 计算索引之后，我们就可以知道每个键值对应的值 value 应该放在哪里了。假设我们用数组 a 存放数据，哈希函数是 f，那键值对 `(key, value)` 就应该放在 `a[f(key)]` 上。不论键值是什么类型，范围有多大，`f(key)` 都是在可接受范围内的整数，可以作为数组的下标。
 
@@ -34,34 +34,33 @@ $x = s_0 \cdot 127^0 + s_1 \cdot 127^1 + s_2 \cdot 127^2 + \dots + s_n \cdot 127
 #### 实现
 
 === "C++"
-
     ```cpp
-    const int SIZE = 1000000;
-    const int M = 999997;
-
+    constexpr int SIZE = 1000000;
+    constexpr int M = 999997;
+    
     struct HashTable {
       struct Node {
         int next, value, key;
       } data[SIZE];
-
+    
       int head[M], size;
-
+    
       int f(int key) { return (key % M + M) % M; }
-
+    
       int get(int key) {
         for (int p = head[f(key)]; p; p = data[p].next)
           if (data[p].key == key) return data[p].value;
         return -1;
       }
-
+    
       int modify(int key, int value) {
         for (int p = head[f(key)]; p; p = data[p].next)
           if (data[p].key == key) return data[p].value = value;
       }
-
+    
       int add(int key, int value) {
         if (get(key) != -1) return -1;
-        data[++size] = (Node){head[f(key)], value, key};
+        data[++size] = Node{head[f(key)], value, key};
         head[f(key)] = size;
         return value;
       }
@@ -69,20 +68,27 @@ $x = s_0 \cdot 127^0 + s_1 \cdot 127^1 + s_2 \cdot 127^2 + \dots + s_n \cdot 127
     ```
 
 === "Python"
-
     ```python
     M = 999997
     SIZE = 1000000
+    
+    
     class Node:
-        def __init__(self, next = None, value = None, key = None): 
+        def __init__(self, next=None, value=None, key=None):
             self.next = next
             self.value = value
             self.key = key
-    data = [Node()] * SIZE
+    
+    
+    data = [Node() for _ in range(SIZE)]
     head = [0] * M
     size = 0
+    
+    
     def f(key):
         return key % M
+    
+    
     def get(key):
         p = head[f(key)]
         while p:
@@ -90,6 +96,8 @@ $x = s_0 \cdot 127^0 + s_1 \cdot 127^1 + s_2 \cdot 127^2 + \dots + s_n \cdot 127
                 return data[p].value
             p = data[p].next
         return -1
+    
+    
     def modify(key, value):
         p = head[f(key)]
         while p:
@@ -97,6 +105,8 @@ $x = s_0 \cdot 127^0 + s_1 \cdot 127^1 + s_2 \cdot 127^2 + \dots + s_n \cdot 127
                 data[p].value = value
                 return data[p].value
             p = data[p].next
+    
+    
     def add(key, value):
         if get(key) != -1:
             return -1
@@ -128,7 +138,7 @@ struct hash_map {  // 哈希表模板
     int hu = hash(u);  // 获取头指针
     for (int i = h[hu]; i; i = e[i].nex)
       if (e[i].u == u) return e[i].v;
-    return e[++cnt] = (data){u, -1, h[hu]}, h[hu] = cnt, e[cnt].v;
+    return e[++cnt] = data{u, -1, h[hu]}, h[hu] = cnt, e[cnt].v;
   }
 
   hash_map() {
@@ -149,7 +159,7 @@ struct hash_map {  // 哈希表模板
 #### 实现
 
 ```cpp
-const int N = 360007;  // N 是最大可以存储的元素数量
+constexpr int N = 360007;  // N 是最大可以存储的元素数量
 
 class Hash {
  private:
